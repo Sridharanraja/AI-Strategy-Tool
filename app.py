@@ -126,8 +126,8 @@ def generate_response(prompt):
 
 
 # Load and Process Documents (adapt path to your environment)
-DATA_DIR = "D:/Everse Ai/Groq/DATA/DATA/DATA/"   # Update this to your folder containing docx/odt/doc files
-VECTOR_STORE_PATH = "D:/Everse Ai/Groq/code/vector_store"
+DATA_DIR = "./DATA/"  # Update this to your folder containing docx/odt/doc files
+VECTOR_STORE_PATH = "./vector_store"
 
 def load_documents():
     files = [os.path.join(DATA_DIR, f) for f in os.listdir(DATA_DIR) if f.endswith((".txt", ".pdf", ".docx"))]
