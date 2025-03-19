@@ -352,7 +352,7 @@ def assess_current_state():
     if st.session_state.ai_assessment:
         st.subheader("🔹 AI Talent Assessment Results")
         st.write(st.session_state.ai_assessment)
-
+    navigation_buttons()
 
 def recommend_value_chains():
     """Step 4: Recommend Value Chains"""
