@@ -257,7 +257,7 @@ def main():
         **Business Challenges & Opportunities:**
         {business_challenges}
 
-        Based on this information, please provide insights, recommendations, and relevant AI use cases that could benefit this organization.
+        Based on this information, please provide detail summary.
         """
 
         with st.spinner("Generating AI response..."):  # Show loading indicator
