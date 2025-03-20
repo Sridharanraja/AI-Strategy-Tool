@@ -226,7 +226,7 @@ def main():
         **Business Challenges & Opportunities:**
         {business_challenges}
 
-        Based on this information, please provide detail summary from AI Strategy perspective.
+        Based on this information, please provide detail summary from AI Strategy perspective. Do not provide any AI strategy recommendations now at this point in time.
         """
 
         with st.spinner("Generating AI response..."):  # Show loading indicator
