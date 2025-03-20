@@ -203,7 +203,7 @@ def main():
         st.write("Here is the summary of the responses I have got from you:")
         
         full_prompt = f"""
-        Below is the survey response more detailed summary from the user:
+        Below is the survey response please provide detailed summary from the user :
         **Organization Details:**
         - Organization Name: {organization_name}
         - Country: {country}
@@ -226,7 +226,7 @@ def main():
         **Business Challenges & Opportunities:**
         {business_challenges}
 
-        Based on this information, please provide detail summary.
+        Based on this information, please provide detail summary from AI Strategy perspective.
         """
 
         with st.spinner("Generating AI response..."):  # Show loading indicator
