@@ -199,42 +199,11 @@ def main():
     business_challenges = st.text_area("**Q6. Last question before we begin: do you have any particular business challenges or opportunities you want to see addressed in the portion of your organization we are focusing on?**")
 
     if st.button("Execute"):
-        user_input = f"""
-        - Organization Name: {organization_name}
-        - Country: {country}
-        - Annual Revenue in USD: {annual_revenue}
-        - Number of Employees: {num_employees}
 
-        **Business Details:**
-        - Focus Area: {focus_area}
-        - Industry Group: {industry_group}
-        - Industry: {industry}
-        - Sub-Industry: {sub_industry}
-        - Main Products/Services: {products_services}
-        - Key Customers: {key_customers}
-
-        **Current AI Usage:**
-        - AI Use Case 1: {ai_use_case_1}
-        - AI Use Case 2: {ai_use_case_2}
-        - AI Use Case 3: {ai_use_case_3}
-
-        **Business Challenges & Opportunities:**
-        {business_challenges}
-    """
-
-
-        relevant_docs = retrieve_relevant_docs(user_input)
- 
-        if relevant_docs and relevant_docs[0] and relevant_docs[1]:           
-            context = relevant_docs[1]  # Get document text
-        else:
-            # data_source = f"**Data Source: {model_name}**"
-            context = "No relevant documents found. Using AI model only."
         st.write("Here is the summary of the responses I have got from you:")
         
         full_prompt = f"""
         Below is the survey response more detailed summary from the user:
-        Context:\n{context}
         **Organization Details:**
         - Organization Name: {organization_name}
         - Country: {country}
