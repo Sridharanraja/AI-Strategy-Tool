@@ -174,7 +174,7 @@ def main():
 
     # Q4b: Industry Group (from CSV)
     industries_df = pd.read_csv("industries.csv")
-    industry_groups = industries_df["Industry Group"].unique().tolist()
+    industry_groups = industries_df["industry_group"].unique().tolist()
     industry_group = st.selectbox("**Q4b. Which industry group best describes your business model?**", industry_groups)
 
     # Q4c: Industry
