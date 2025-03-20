@@ -15,6 +15,10 @@ import pycountry
 # Initialize Streamlit app
 st.set_page_config(page_title="AI Strategy Planning Tool", page_icon="\U0001F9E0")
 
+# Initialize session state
+if "step" not in st.session_state:
+    st.session_state.step = 1
+
 # Function to go to the next step
 def next_step():
     st.session_state.step += 1
@@ -133,8 +137,8 @@ def retrieve_relevant_docs(query):
 
     return doc_names, doc_texts  # Return doc names & text
 
-def main():
-    st.header("Understanding Your Context")
+def step0():
+    st.header("Step 0: Understanding Your Context")
     st.markdown(":blue[Let’s get started! To serve you best, I need to thoroughly understand your context]") #:red[this is red!]
     # st.header("Q1. What is your organization’s name?")
     # Q1: Organization Name
@@ -174,14 +178,19 @@ def main():
 
     # Q4b: Industry Group (from CSV)
     industries_df = pd.read_csv("industries.csv")
-    industry_groups = industries_df["industry_group"].unique().tolist()
-    industry_group = st.selectbox("**Q4b. Which industry group best describes your business model?**", industry_groups)
+    sector = industries_df["sector"].unique().tolist()
+    sector = st.selectbox("**Q4b. Which industry sector best describes your business model?**", sector)
+    
+    # Q4c & Q4d pre-process
+    filtered_df = industries_df[industries_df["sector"] == sector]
+    industry_groups = filtered_df["industry_group"].unique().tolist()
+    sub_industries = filtered_df["sub_industry"].unique().tolist()
 
     # Q4c: Industry
-    industry = st.text_input("**Q4c. Which industry best describes your business model?**")
+    industry_groups = st.selectbox("**Q4c. Which industry best describes your business model?**",industry_groups)
 
     # Q4d: Sub-Industry
-    sub_industry = st.text_input("**Q4d. Which sub-industry best describes your business model?**")
+    sub_industry = st.selectbox("**Q4d. Which sub-industry best describes your business model?**",sub_industries)
 
     # Q4e: Main Products/Services
     products_services = st.text_area("**Q4e. What are the main products or services?**")
@@ -198,12 +207,46 @@ def main():
     # Q6: Business Challenges/Opportunities
     business_challenges = st.text_area("**Q6. Last question before we begin: do you have any particular business challenges or opportunities you want to see addressed in the portion of your organization we are focusing on?**")
 
-    if st.button("Execute"):
+    if "step0" not in st.session_state:
+        st.session_state.it_assessment = None
 
+    if st.button("Execute"):
+        user_input = f"""
+        - Organization Name: {organization_name}
+        - Country: {country}
+        - Annual Revenue in USD: {annual_revenue}
+        - Number of Employees: {num_employees}
+
+        **Business Details:**
+        - Focus Area: {focus_area}
+        - Industry Group: {industry_group}
+        - Industry: {industry}
+        - Sub-Industry: {sub_industry}
+        - Main Products/Services: {products_services}
+        - Key Customers: {key_customers}
+
+        **Current AI Usage:**
+        - AI Use Case 1: {ai_use_case_1}
+        - AI Use Case 2: {ai_use_case_2}
+        - AI Use Case 3: {ai_use_case_3}
+
+        **Business Challenges & Opportunities:**
+        {business_challenges}
+    """
+
+
+        relevant_docs = retrieve_relevant_docs(user_input)
+ 
+        if relevant_docs and relevant_docs[0] and relevant_docs[1]:           
+            context = relevant_docs[1]  # Get document text
+        else:
+            # data_source = f"**Data Source: {model_name}**"
+            context = "No relevant documents found. Using AI model only."
         st.write("Here is the summary of the responses I have got from you:")
         
         full_prompt = f"""
-        Below is the survey response please provide detailed summary from the user :
+        Below is the survey response more detailed summary from the user:
+        Context:\n{context}
         **Organization Details:**
         - Organization Name: {organization_name}
         - Country: {country}
@@ -226,15 +269,52 @@ def main():
         **Business Challenges & Opportunities:**
         {business_challenges}
 
-        Based on this information, please provide detail summary from AI Strategy perspective. Do not provide any AI strategy recommendations now at this point in time.
+        Based on this information, please provide detail summary.
         """
 
         with st.spinner("Generating AI response..."):  # Show loading indicator
             bot_reply = generate_response(full_prompt)
             bot_reply
 
-
+    navigation_buttons()
         # st.session_state.ai_governance = generate_response(full_prompt)
 
-if __name__ == "__main__":
-    main()
+def step1():
+    st.header("Step 1: Construct Value Chains")
+    navigation_buttons()
+def step2():
+    st.header("Step 2: AI Use Case Identification")
+    navigation_buttons()
+
+def step3():
+    st.header("Step 3: AI Use case prioritization based on Effort-Impact Matrix")
+    navigation_buttons()
+
+def step4():
+    st.header("Step 4: Develop AI Strategy")
+    navigation_buttons()
+
+def step5():
+    st.header("Step 5: AI Implementation Plan")
+
+    navigation_buttons(last_step=True)
+
+def navigation_buttons(last_step=False):
+    """Display Previous and Next buttons for navigation"""
+    col1, col2 = st.columns(2)
+    col1.button("Previous", on_click=prev_step)
+    if not last_step:
+        col2.button("Next", on_click=next_step)
+
+if st.session_state.step == 1:
+    step0()
+elif st.session_state.step == 2:
+    step1()
+elif st.session_state.step == 3:
+    step2()
+elif st.session_state.step == 4:
+    step3()
+elif st.session_state.step == 5:
+    step4()
+elif st.session_state.step == 6:
+    step5()
