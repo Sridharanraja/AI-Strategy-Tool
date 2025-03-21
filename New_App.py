@@ -303,7 +303,7 @@ def step1():
 
             full_prompt = f"""
             Context: {context}
-            Convert these value chains into AI use cases and provide the list {st.session_state.step0}
+            Construct value chains and list primary and support activities {st.session_state.step0}
             """
             with st.spinner("Generating AI response..."):
                 step1_output = generate_response(full_prompt)
