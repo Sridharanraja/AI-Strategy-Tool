@@ -278,7 +278,7 @@ def step0():
                     # Store response in session state for step1
         st.session_state["step0"] = bot_reply  
 
-    navigation_buttons()
+    # navigation_buttons()
     st.button("→", on_click=next_step)
         # st.session_state.ai_governance = generate_response(full_prompt)
 
