@@ -279,11 +279,12 @@ def step0():
         st.session_state["step0"] = bot_reply  
 
     # navigation_buttons()
-    st.button("→", on_click=next_step)
+    st.button("Next", on_click=next_step)
         # st.session_state.ai_governance = generate_response(full_prompt)
 
 def step1():
-    navigation_buttons()
+    # navigation_buttons()
+    st.button("Next", on_click=next_step)
     st.header("Step 1: Construct Value Chains")
         # Ensure step0 output exists before proceeding
     if "step0" not in st.session_state:
@@ -315,7 +316,8 @@ def step1():
 
     # navigation_buttons()
 def step2():
-    navigation_buttons()
+    # navigation_buttons()
+    navigation_buttons(last_step=True)
     st.header("Step 2: AI Use Case Identification")
     if "step1" not in st.session_state:
         st.warning("Please complete Step 1 first before proceeding.")
@@ -344,9 +346,11 @@ def step2():
             # st.write("### AI Output for Step 1:")
             st.write(step2_output)
     # navigation_buttons()
+    st.button("Next", on_click=next_step)
 
 def step3():
-    navigation_buttons()
+    # navigation_buttons()
+    navigation_buttons(last_step=True)
     st.header("Step 3: AI Use case prioritization based on Effort-Impact Matrix")
     if "step2" not in st.session_state:
         st.warning("Please complete Step 2 first before proceeding.")
@@ -375,9 +379,11 @@ def step3():
             # st.write("### AI Output for Step 1:")
             st.write(step3_output)
     # navigation_buttons()
+    st.button("Next", on_click=next_step)
 
 def step4():
-    navigation_buttons()
+    # navigation_buttons()
+    navigation_buttons(last_step=True)
     st.header("Step 4: Develop AI Strategy")
     if "step3" not in st.session_state:
         st.warning("Please complete Step 3 first before proceeding.")
@@ -406,6 +412,7 @@ def step4():
             # st.write("### AI Output for Step 1:")
             st.write(step4_output)
     # navigation_buttons()
+    st.button("Next", on_click=next_step)
 
 def step5():
     navigation_buttons(last_step=True)
