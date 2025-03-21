@@ -53,32 +53,14 @@ def generate_response(prompt):
 
 
 # Load and Process Documents (adapt path to your environment)
-DATA_DIR = "./sheets/DATA/"   # Update this to your folder containing docx/odt/doc files
-VECTOR_STORE_PATH = "vector_store"
+DATA_DIR = "./sheets/DATA/NEW/"   # Update this to your folder containing docx/odt/doc files
+VECTOR_STORE_PATH = "NEW/vector_store"
 
-def load_documents():
-    files = [os.path.join(DATA_DIR, f) for f in os.listdir(DATA_DIR) if f.endswith((".txt", ".pdf", ".docx"))]
-    documents = []
-
-    for file in files:
-        try:
-            with open(file, "r", encoding="utf-8", errors="ignore") as f:
-                content = f.read()
-            documents.append({"source": os.path.basename(file), "content": content})
-        except Exception as e:
-            print(f"Error processing {file}: {e}")
-
-    return documents
-
-# Vectorization
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=50)
+# Initialize Embeddings
 embedding_model = "sentence-transformers/all-MiniLM-L6-v2"
 embeddings = HuggingFaceEmbeddings(model_name=embedding_model)
 
-def load_documents():
-    """Load existing documents."""
-    return []
-
+# Load and Process Documents
 def load_documents():
     files = [os.path.join(DATA_DIR, f) for f in os.listdir(DATA_DIR) if f.endswith((".txt", ".pdf", ".docx"))]
     documents = []
@@ -93,16 +75,27 @@ def load_documents():
 
     return documents
 
+# Split Text into Chunks
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=50)
+
+
+# Process DOCX and Create Vector Store
 def process_docx(file_path):
     """Process DOCX file and update vector store."""
     loader = Docx2txtLoader(file_path)
     documents = loader.load()
+    
+    if not documents:
+        print("No content extracted from DOCX.")
+        return
+
     text_chunks = [(file_path, chunk) for chunk in text_splitter.split_text(documents[0].page_content)]
 
     if os.path.exists(VECTOR_STORE_PATH):
         vector_store = FAISS.load_local(VECTOR_STORE_PATH, embeddings, allow_dangerous_deserialization=True)
         vector_store.add_texts([chunk[1] for chunk in text_chunks], metadatas=[{"source": chunk[0]} for chunk in text_chunks])
     else:
+        print("Creating a new FAISS vector store...")
         vector_store = FAISS.from_texts(
             [chunk[1] for chunk in text_chunks], 
             embeddings, 
@@ -110,17 +103,58 @@ def process_docx(file_path):
         )
 
     vector_store.save_local(VECTOR_STORE_PATH)
+    print("✅ Vector store saved successfully!")
 
-
+# Ensure Vector Store is Created
 if os.path.exists(VECTOR_STORE_PATH):
-    try:
-        vector_store = FAISS.load_local(VECTOR_STORE_PATH, embeddings, allow_dangerous_deserialization=True)
-    except Exception as e:
-        st.error(f"Error loading vector store: {e}")
-        vector_store = None
+    with st.status("🔄 Loading vector store..."):
+        try:
+            vector_store = FAISS.load_local(VECTOR_STORE_PATH, embeddings, allow_dangerous_deserialization=True)
+            # st.success("✅ Vector store loaded successfully!")
+        except Exception as e:
+            st.error(f"Error loading vector store: {e}")
+            vector_store = None
 else:
-    st.warning("Vector store not found. Creating a new one...")
-    vector_store = None
+    with st.status("🚀 Creating a new vector store..."):
+        # st.warning("Vector store not found. Creating a new one...")
+        documents = load_documents()
+        
+        if not documents:
+            st.error("No documents found to initialize the vector store!")
+        else:
+            text_chunks = [(doc["source"], chunk) for doc in documents for chunk in text_splitter.split_text(doc["content"])]
+
+            if text_chunks:
+                vector_store = FAISS.from_texts(
+                    [chunk[1] for chunk in text_chunks], 
+                    embeddings, 
+                    metadatas=[{"source": chunk[0]} for chunk in text_chunks]
+                )
+                vector_store.save_local(VECTOR_STORE_PATH)
+                # st.success("✅ New vector store created successfully!")
+            else:
+                st.error("No text chunks available to create the vector store!")
+print("🎉 Completed setup!")
+
+
+# Retrieve Relevant Docs
+def retrieve_relevant_docs(query):
+    if not vector_store:
+        return None, None
+    
+    results = vector_store.similarity_search_with_score(query, k=3)  # Adjust k as needed
+
+    if not results:  # No relevant docs found
+        return None, None
+
+    doc_names = list(set(res[0].metadata["source"] for res in results if res[0] and res[0].metadata))
+    doc_texts = "\n".join([
+        f"**Source: {res[0].metadata['source']}**\n{res[0].page_content[:1000]}"  # Truncate text
+        for res in results if res[0] and res[0].metadata
+    ])
+
+    return doc_names, doc_texts  # Return doc names & text
+
 
 
 def retrieve_relevant_docs(query):
@@ -210,43 +244,9 @@ def step0():
     if "step0" not in st.session_state:
         st.session_state.it_assessment = None
 
-    if st.button("Execute"):
-        user_input = f"""
-        - Organization Name: {organization_name}
-        - Country: {country}
-        - Annual Revenue in USD: {annual_revenue}
-        - Number of Employees: {num_employees}
-
-        **Business Details:**
-        - Focus Area: {focus_area}
-        - Industry Group: {industry_group}
-        - Industry: {industry}
-        - Sub-Industry: {sub_industry}
-        - Main Products/Services: {products_services}
-        - Key Customers: {key_customers}
-
-        **Current AI Usage:**
-        - AI Use Case 1: {ai_use_case_1}
-        - AI Use Case 2: {ai_use_case_2}
-        - AI Use Case 3: {ai_use_case_3}
-
-        **Business Challenges & Opportunities:**
-        {business_challenges}
-    """
-
-
-        relevant_docs = retrieve_relevant_docs(user_input)
- 
-        if relevant_docs and relevant_docs[0] and relevant_docs[1]:           
-            context = relevant_docs[1]  # Get document text
-        else:
-            # data_source = f"**Data Source: {model_name}**"
-            context = "No relevant documents found. Using AI model only."
-        st.write("Here is the summary of the responses I have got from you:")
-        
+    if st.button("Execute"):        
         full_prompt = f"""
         Below is the survey response more detailed summary from the user:
-        Context:\n{context}
         **Organization Details:**
         - Organization Name: {organization_name}
         - Country: {country}
@@ -255,8 +255,8 @@ def step0():
 
         **Business Details:**
         - Focus Area: {focus_area}
-        - Industry Group: {industry_group}
-        - Industry: {industry}
+        - Sector: {sector}
+        - Industry Group: {industry_groups}
         - Sub-Industry: {sub_industry}
         - Main Products/Services: {products_services}
         - Key Customers: {key_customers}
@@ -275,27 +275,169 @@ def step0():
         with st.spinner("Generating AI response..."):  # Show loading indicator
             bot_reply = generate_response(full_prompt)
             bot_reply
+                    # Store response in session state for step1
+        st.session_state["step0"] = bot_reply  
 
     navigation_buttons()
         # st.session_state.ai_governance = generate_response(full_prompt)
 
 def step1():
     st.header("Step 1: Construct Value Chains")
+        # Ensure step0 output exists before proceeding
+    if "step0" not in st.session_state:
+        st.warning("Please complete Step 0 first before proceeding.")
+        return
+    
+    if st.button("Execute"):
+        with st.spinner("Thinking..."):
+            relevant_docs = retrieve_relevant_docs(st.session_state["step0"])
+
+            if relevant_docs and relevant_docs[0] and relevant_docs[1]:           
+                context = relevant_docs[1]  # Get document text
+            else:
+                context = "No relevant documents found. Using AI model only."        
+            # st.write("Here is the summary of the responses I have got from you:")
+
+            full_prompt = f"""
+            Context: {context}
+            Convert these value chains into AI use cases and provide the list {st.session_state.step0}
+            """
+            with st.spinner("Generating AI response..."):
+                step1_output = generate_response(full_prompt)
+
+            # Store step1 output
+            st.session_state["step1"] = step1_output
+
+            # st.write("### AI Output for Step 1:")
+            st.write(step1_output)
+
     navigation_buttons()
 def step2():
     st.header("Step 2: AI Use Case Identification")
+    if "step1" not in st.session_state:
+        st.warning("Please complete Step 1 first before proceeding.")
+        return
+    
+    if st.button("Execute"):
+        with st.spinner("Thinking..."):
+            relevant_docs = retrieve_relevant_docs(st.session_state["step1"])
+
+            if relevant_docs and relevant_docs[0] and relevant_docs[1]:           
+                context = relevant_docs[1]  # Get document text
+            else:
+                context = "No relevant documents found. Using AI model only."        
+            # st.write("Here is the summary of the responses I have got from you:")
+
+            full_prompt = f"""
+            Context: {context}
+            Convert these value chains into AI use cases and provide the list {st.session_state.step1}
+            """
+            with st.spinner("Generating AI response..."):
+                step2_output = generate_response(full_prompt)
+
+            # Store step1 output
+            st.session_state["step2"] = step2_output
+
+            # st.write("### AI Output for Step 1:")
+            st.write(step2_output)
     navigation_buttons()
 
 def step3():
     st.header("Step 3: AI Use case prioritization based on Effort-Impact Matrix")
+    if "step2" not in st.session_state:
+        st.warning("Please complete Step 2 first before proceeding.")
+        return
+    
+    if st.button("Execute"):
+        with st.spinner("Thinking..."):
+            relevant_docs = retrieve_relevant_docs(st.session_state["step2"])
+
+            if relevant_docs and relevant_docs[0] and relevant_docs[1]:           
+                context = relevant_docs[1]  # Get document text
+            else:
+                context = "No relevant documents found. Using AI model only."        
+            # st.write("Here is the summary of the responses I have got from you:")
+
+            full_prompt = f"""
+            Context: {context}
+            Prioritize the AI use cases  into 4 buckets based on the principles of the effort-impact matrix: {st.session_state.step2}
+            """
+            with st.spinner("Generating AI response..."):
+                step3_output = generate_response(full_prompt)
+
+            # Store step1 output
+            st.session_state["step3"] = step3_output
+
+            # st.write("### AI Output for Step 1:")
+            st.write(step3_output)
     navigation_buttons()
 
 def step4():
     st.header("Step 4: Develop AI Strategy")
+    if "step3" not in st.session_state:
+        st.warning("Please complete Step 3 first before proceeding.")
+        return
+        
+    if st.button("Execute"):
+        with st.spinner("Thinking..."):
+            relevant_docs = retrieve_relevant_docs(st.session_state["step3"])
+
+            if relevant_docs and relevant_docs[0] and relevant_docs[1]:           
+                context = relevant_docs[1]  # Get document text
+            else:
+                context = "No relevant documents found. Using AI model only."        
+            # st.write("Here is the summary of the responses I have got from you:")
+
+            full_prompt = f"""
+            Context: {context}
+            For the use cases in the buckets Quick Wins and Strategic Projects, develop a detailed AI strategy and action plan {st.session_state.step3}
+            """
+            with st.spinner("Generating AI response..."):
+                step4_output = generate_response(full_prompt)
+
+            # Store step1 output
+            st.session_state["step4"] = step4_output
+
+            # st.write("### AI Output for Step 1:")
+            st.write(step4_output)
     navigation_buttons()
 
 def step5():
     st.header("Step 5: AI Implementation Plan")
+    if "step4" not in st.session_state:
+        st.warning("Please complete Step 4 first before proceeding.")
+        return
+    
+    if st.button("Execute"):
+        with st.spinner("Thinking..."):
+            relevant_docs = retrieve_relevant_docs(st.session_state["step4"])
+
+            if relevant_docs and relevant_docs[0] and relevant_docs[1]:           
+                context = relevant_docs[1]  # Get document text
+            else:
+                context = "No relevant documents found. Using AI model only."        
+            # st.write("Here is the summary of the responses I have got from you:")
+
+            full_prompt = f"""
+            Context: {context}
+            For the AI strategy, create a detailed implementation plan. Please have details on the following topics as part of the implementation plan.            
+            1.	Assess AI skills
+            2.	Acquire AI skills
+            3.	Access AI resources
+            4.	Prioritize AI use cases
+            5.	Create an AI proof of concept
+            6.	Implement responsible AI
+            7.	Estimate delivery timelines 
+            {st.session_state.step4}
+            """
+            with st.spinner("Generating AI response..."):
+                step5_output = generate_response(full_prompt)
+
+            # Store step1 output
+            st.session_state["step5"] = step5_output
+
+            # st.write("### AI Output for Step 1:")
+            st.write(step5_output)
 
     navigation_buttons(last_step=True)
 
