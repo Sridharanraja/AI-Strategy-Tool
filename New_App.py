@@ -388,7 +388,7 @@ def step1():
             st.session_state["step1"] = step1_output
             st.session_state["data"]["step1"]["bot_reply"] = step1_output
             st.session_state["data"]["step1"] = {
-            "bot_reply": st.session_state["data"]["step1"].get("bot_reply", "")
+            "step1_output": st.session_state["data"]["step1"].get("step1_output", "")
             }
 
             # st.write("### AI Output for Step 1:")
