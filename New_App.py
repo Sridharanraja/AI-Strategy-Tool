@@ -391,7 +391,7 @@ def step1():
             }
 
             # st.write("### AI Output for Step 1:")
-            # st.write(step1_output)
+            st.write(step1_output)
 
     # navigation_buttons()
     st.button("Next", on_click=next_step)
