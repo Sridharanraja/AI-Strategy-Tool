@@ -357,6 +357,10 @@ def step1():
     if "step0" not in st.session_state:
         st.warning("Please complete Step 0 first before proceeding.")
         return
+
+    # Retrieve existing data or use defaults
+    data = st.session_state["data"]["step1"]
+    
     st.text_area("**Previous AI Response:**", 
          value=data.get("step1_output", ""), 
          height=200, 
@@ -399,7 +403,7 @@ def step2():
         st.warning("Please complete Step 1 first before proceeding.")
         return
     # Retrieve existing data or use defaults
-    data = st.session_state["data"]["step1"]
+    data = st.session_state["data"]["step2"]
 
     st.text_area("**Previous AI Response:**", 
      value=data.get("step2_output", ""), 
