@@ -289,7 +289,7 @@ def step0():
 
     st.text_area("**Previous AI Response:**", 
              value=data.get("bot_reply", ""), 
-             height=200, 
+             height=100, 
              disabled=True)
 
     if st.button("Execute"):        
@@ -386,7 +386,7 @@ def step1():
 
             # Store step1 output
             st.session_state["step1"] = step1_output
-            st.session_state["data"]["step1"]["bot_reply"] = step1_output
+            st.session_state["data"]["step1"]["step1_output"] = step1_output
             st.session_state["data"]["step1"] = {
             "step1_output": st.session_state["data"]["step1"].get("step1_output", "")
             }
@@ -454,7 +454,7 @@ def step3():
         
     st.text_area("**Previous AI Response:**", 
      value=data.get("step3_output", ""), 
-     height=200, 
+     height=100, 
      disabled=True)
     
     if st.button("Execute"):
@@ -499,7 +499,7 @@ def step4():
     
     st.text_area("**Previous AI Response:**", 
          value=data.get("step4_output", ""), 
-         height=200, 
+         height=100, 
          disabled=True)
     
     if st.button("Execute"):
@@ -543,7 +543,7 @@ def step5():
 
     st.text_area("**Previous AI Response:**", 
          value=data.get("step5_output", ""), 
-         height=200, 
+         height=100, 
          disabled=True)
     
     if st.button("Execute"):
