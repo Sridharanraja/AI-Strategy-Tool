@@ -453,7 +453,7 @@ def step5():
             # st.write("### AI Output for Step 1:")
             st.write(step5_output)
 
-    navigation_buttons(last_step=True)
+    # navigation_buttons(last_step=True)
 
 def navigation_buttons(last_step=False):
     """Display Previous and Next buttons for navigation"""
