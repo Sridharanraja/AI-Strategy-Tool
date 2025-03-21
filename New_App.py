@@ -427,12 +427,13 @@ def step2():
             """
             with st.spinner("Generating AI response..."):
                 step2_output = generate_response(full_prompt)
+                step2_output
 
             # Store step1 output
             st.session_state["step2"] = step2_output
-            st.session_state["data"]["step2"]["bot_reply"] = step2_output
+            st.session_state["data"]["step2"]["step2_output"] = step2_output
             st.session_state["data"]["step2"] = {
-            "bot_reply": st.session_state["data"]["step2"].get("bot_reply", "")
+            "step2_output": st.session_state["data"]["step2"].get("step2_output", "")
             }
 
 
@@ -473,12 +474,13 @@ def step3():
             """
             with st.spinner("Generating AI response..."):
                 step3_output = generate_response(full_prompt)
+                step3_output
 
             # Store step3 output
             st.session_state["step3"] = step3_output
-            st.session_state["data"]["step3"]["bot_reply"] = step3_output
+            st.session_state["data"]["step3"]["step3_output"] = step3_output
             st.session_state["data"]["step3"] = {
-            "bot_reply": st.session_state["data"]["step3"].get("bot_reply", "")
+            "step3_output": st.session_state["data"]["step3"].get("step3_output", "")
             }
 
             # st.write("### AI Output for Step 1:")
@@ -518,12 +520,13 @@ def step4():
             """
             with st.spinner("Generating AI response..."):
                 step4_output = generate_response(full_prompt)
+                step4_output
 
             # Store step1 output
             st.session_state["step4"] = step4_output
-            st.session_state["data"]["step4"]["bot_reply"] = step4_output
+            st.session_state["data"]["step4"]["step4_output"] = step4_output
             st.session_state["data"]["step4"] = {
-            "bot_reply": st.session_state["data"]["step4"].get("bot_reply", "")
+            "bot_reply": st.session_state["data"]["step4"].get("step4_output", "")
             }
 
             # st.write("### AI Output for Step 1:")
@@ -573,9 +576,9 @@ def step5():
 
             # Store step1 output
             st.session_state["step5"] = step5_output
-            st.session_state["data"]["step5"]["bot_reply"] = step5_output
+            st.session_state["data"]["step5"]["step5_output"] = step5_output
             st.session_state["data"]["step5"] = {
-            "bot_reply": st.session_state["data"]["step5"].get("bot_reply", "")
+            "bot_reply": st.session_state["data"]["step5"].get("step5_output", "")
             }
 
             # st.write("### AI Output for Step 1:")
