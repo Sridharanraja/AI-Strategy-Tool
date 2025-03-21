@@ -363,7 +363,7 @@ def step1():
     
     st.text_area("**Previous AI Response:**", 
          value=data.get("step1_output", ""), 
-         height=200, 
+         height=100, 
          disabled=True)
     
     if st.button("Execute"):
@@ -382,6 +382,7 @@ def step1():
             """
             with st.spinner("Generating AI response..."):
                 step1_output = generate_response(full_prompt)
+                step1_output
 
             # Store step1 output
             st.session_state["step1"] = step1_output
@@ -391,7 +392,7 @@ def step1():
             }
 
             # st.write("### AI Output for Step 1:")
-            st.write(step1_output)
+            # st.write(step1_output)
 
     # navigation_buttons()
     st.button("Next", on_click=next_step)
