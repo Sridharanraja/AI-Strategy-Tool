@@ -10,25 +10,49 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import pandas as pd
 import pycountry
+import json
 
 
 # Initialize Streamlit app
 st.set_page_config(page_title="AI Strategy Planning Tool", page_icon="\U0001F9E0")
 
+
+# --- Initialize Session State ---
+if "data" not in st.session_state:
+    # Create a JSON structure to store all steps
+    st.session_state["data"] = {
+        "step0": {},
+        "step1": {},
+        "step2": {},
+        "step3": {},
+        "step4": {},
+        "step5": {}
+    }
+
+
+
 # Initialize session state
 if "step" not in st.session_state:
-    st.session_state.step = 1
+    # st.session_state.step = 1
+    st.session_state["step"] = 1
 
-# Function to go to the next step
+
+def go_to_step(step):
+    """Function to update the step in session state"""
+    st.session_state.step = step
+
 def next_step():
-    st.session_state.step += 1
-    st.rerun()
+    st.session_state["step"] = min(st.session_state["step"] + 1, 6)
 
-# Function to go to the previous step
 def prev_step():
-    if st.session_state.step > 1:
-        st.session_state.step -= 1
-        st.rerun()
+    st.session_state["step"] = max(st.session_state["step"] - 1, 1)
+
+def navigation_buttons(last_step=False):
+    """Display Previous and Next buttons for navigation"""
+    col1, col2 = st.columns(2)
+    col1.button("←", on_click=prev_step)
+    if not last_step:
+        col2.button("→", on_click=next_step)
 
 
 
@@ -193,27 +217,35 @@ def step0():
     )
 
     # Q1: Organization Name
-    organization_name = st.text_input("**Q1. What is your organization’s name?**")
+    organization_name = st.text_input("**Q1. What is your organization’s name?**", 
+                                      value=data.get("organization_name", ""))
 
     # Q2: Country Selection
     countries = [country.name for country in pycountry.countries]
-    country = st.selectbox("**Q2. Which country is your organization based in?**", countries)
+    country = st.selectbox("**Q2. Which country is your organization based in?**", 
+                           countries, 
+                           index=countries.index(data.get("country", "United States")) if "country" in data else 0)
     # country_list = ["USA", "Canada", "UK", "Germany", "France", "India", "China", "Japan", "Australia"]
     # country = st.selectbox("**Q2. Which country is your organization based in?**", country_list)
 
     # Q3a: Annual Revenue
-    annual_revenue = st.text_input("**Q3a. What is your organization’s annual revenue in USD?**")
+    annual_revenue = st.text_input("**Q3a. What is your organization’s annual revenue in USD?**", 
+                                   value=data.get("annual_revenue", ""))
 
     # Q3b: Number of Employees
-    num_employees = st.text_input("**Q3b. What is the number of employees in your organization?**")
+    num_employees = st.text_input("**Q3b. What is the number of employees in your organization?**", 
+                                  value=data.get("num_employees", ""))
 
     # Q4a: Focus Area
-    focus_area = st.text_input("**Q4a. To help identify relevant AI use cases, which part of your organization do you want to focus on?**")
+    focus_area = st.text_input("**Q4a. To help identify relevant AI use cases, which part of your organization do you want to focus on?**", 
+                               value=data.get("focus_area", ""))
+        
 
     # Q4b: Industry Group (from CSV)
     industries_df = pd.read_csv("industries.csv")
-    sector = industries_df["sector"].unique().tolist()
-    sector = st.selectbox("**Q4b. Which industry sector best describes your business model?**", sector)
+    # sector = industries_df["sector"].unique().tolist()
+    sector = st.selectbox("**Q4b. Which industry sector best describes your business model?**",industries_df["sector"].unique().tolist(),index=0)
+
     
     # Q4c & Q4d pre-process
     filtered_df = industries_df[industries_df["sector"] == sector]
@@ -224,25 +256,38 @@ def step0():
     industry_groups = st.selectbox("**Q4c. Which industry best describes your business model?**",industry_groups)
 
     # Q4d: Sub-Industry
-    sub_industry = st.selectbox("**Q4d. Which sub-industry best describes your business model?**",sub_industries)
+    sub_industry = st.selectbox("**Q4d. Which sub-industry best describes your business model?**", 
+                                sub_industries, 
+                                index=0)
 
     # Q4e: Main Products/Services
-    products_services = st.text_area("**Q4e. What are the main products or services?**")
+    products_services = st.text_area("**Q4e. What are the main products or services?**", 
+                                     value=data.get("products_services", ""))
 
     # Q4f: Key Customers
-    key_customers = st.text_area("**Q4f. Who are the key customers?**")
+    key_customers = st.text_area("**Q4f. Who are the key customers?**", 
+                                 value=data.get("key_customers", ""))
 
     # Q5: Current AI Usage
     st.markdown("### **Q5. Do you currently use AI in any part of your organization? If so, could you briefly describe these use cases?**", unsafe_allow_html=True)
-    ai_use_case_1 = st.text_area("**Q5a. Current AI use case 1**")
-    ai_use_case_2 = st.text_area("**Q5b. Current AI use case 2**")
-    ai_use_case_3 = st.text_area("**Q5c. Current AI use case 3**")
+    ai_use_case_1 = st.text_area("**Q5a. Current AI use case 1**", 
+                                 value=data.get("ai_use_case_1", ""))
+    ai_use_case_2 = st.text_area("**Q5b. Current AI use case 2**", 
+                                 value=data.get("ai_use_case_2", ""))
+    ai_use_case_3 = st.text_area("**Q5c. Current AI use case 3**", 
+                                 value=data.get("ai_use_case_3", ""))
 
     # Q6: Business Challenges/Opportunities
-    business_challenges = st.text_area("**Q6. Last question before we begin: do you have any particular business challenges or opportunities you want to see addressed in the portion of your organization we are focusing on?**")
+    business_challenges = st.text_area("**Q6. Last question before we begin: do you have any particular business challenges or opportunities you want to see addressed in the portion of your organization we are focusing on?**", 
+                                       value=data.get("business_challenges", ""))
 
     if "step0" not in st.session_state:
         st.session_state.it_assessment = None
+
+    st.text_area("**Previous AI Response:**", 
+             value=data.get("bot_reply", ""), 
+             height=200, 
+             disabled=True)
 
     if st.button("Execute"):        
         full_prompt = f"""
@@ -276,7 +321,26 @@ def step0():
             bot_reply = generate_response(full_prompt)
             bot_reply
                     # Store response in session state for step1
-        st.session_state["step0"] = bot_reply  
+        # st.session_state["step0"] = bot_reply  
+        st.session_state["data"]["step0"]["bot_reply"] = bot_reply
+        st.session_state["data"]["step0"] = {
+            "organization_name": organization_name,
+            "country": country,
+            "annual_revenue": annual_revenue,
+            "num_employees": num_employees,
+            "focus_area": focus_area,
+            "sector": sector,
+            "industry_group": industry_groups,
+            "sub_industry": sub_industry,
+            "products_services": products_services,
+            "key_customers": key_customers,
+            "ai_use_case_1": ai_use_case_1,
+            "ai_use_case_2": ai_use_case_2,
+            "ai_use_case_3": ai_use_case_3,
+            "business_challenges": business_challenges,
+            "bot_reply": st.session_state["data"]["step0"].get("bot_reply", "")
+        }
+
 
     # navigation_buttons()
     st.button("Next", on_click=next_step)
@@ -290,6 +354,10 @@ def step1():
     if "step0" not in st.session_state:
         st.warning("Please complete Step 0 first before proceeding.")
         return
+    st.text_area("**Previous AI Response:**", 
+         value=data.get("step1_output", ""), 
+         height=200, 
+         disabled=True)
     
     if st.button("Execute"):
         with st.spinner("Thinking..."):
@@ -310,9 +378,13 @@ def step1():
 
             # Store step1 output
             st.session_state["step1"] = step1_output
+            st.session_state["data"]["step1"]["bot_reply"] = step1_output
+            st.session_state["data"]["step1"] = {
+            "bot_reply": st.session_state["data"]["step1"].get("bot_reply", "")
+            }
 
             # st.write("### AI Output for Step 1:")
-            st.write(step1_output)
+            # st.write(step1_output)
 
     # navigation_buttons()
     st.button("Next", on_click=next_step)
@@ -323,6 +395,11 @@ def step2():
     if "step1" not in st.session_state:
         st.warning("Please complete Step 1 first before proceeding.")
         return
+
+    st.text_area("**Previous AI Response:**", 
+     value=data.get("step2_output", ""), 
+     height=200, 
+     disabled=True)
     
     if st.button("Execute"):
         with st.spinner("Thinking..."):
@@ -343,9 +420,14 @@ def step2():
 
             # Store step1 output
             st.session_state["step2"] = step2_output
+            st.session_state["data"]["step2"]["bot_reply"] = step2_output
+            st.session_state["data"]["step2"] = {
+            "bot_reply": st.session_state["data"]["step2"].get("bot_reply", "")
+            }
+
 
             # st.write("### AI Output for Step 1:")
-            st.write(step2_output)
+            # st.write(step2_output)
     # navigation_buttons()
     st.button("Next", on_click=next_step)
 
@@ -356,6 +438,11 @@ def step3():
     if "step2" not in st.session_state:
         st.warning("Please complete Step 2 first before proceeding.")
         return
+        
+    st.text_area("**Previous AI Response:**", 
+     value=data.get("step3_output", ""), 
+     height=200, 
+     disabled=True)
     
     if st.button("Execute"):
         with st.spinner("Thinking..."):
@@ -374,11 +461,15 @@ def step3():
             with st.spinner("Generating AI response..."):
                 step3_output = generate_response(full_prompt)
 
-            # Store step1 output
+            # Store step3 output
             st.session_state["step3"] = step3_output
+            st.session_state["data"]["step3"]["bot_reply"] = step3_output
+            st.session_state["data"]["step3"] = {
+            "bot_reply": st.session_state["data"]["step3"].get("bot_reply", "")
+            }
 
             # st.write("### AI Output for Step 1:")
-            st.write(step3_output)
+            # st.write(step3_output)
     # navigation_buttons()
     st.button("Next", on_click=next_step)
 
@@ -389,7 +480,12 @@ def step4():
     if "step3" not in st.session_state:
         st.warning("Please complete Step 3 first before proceeding.")
         return
-        
+
+    st.text_area("**Previous AI Response:**", 
+         value=data.get("step4_output", ""), 
+         height=200, 
+         disabled=True)
+    
     if st.button("Execute"):
         with st.spinner("Thinking..."):
             relevant_docs = retrieve_relevant_docs(st.session_state["step3"])
@@ -409,9 +505,13 @@ def step4():
 
             # Store step1 output
             st.session_state["step4"] = step4_output
+            st.session_state["data"]["step4"]["bot_reply"] = step4_output
+            st.session_state["data"]["step4"] = {
+            "bot_reply": st.session_state["data"]["step4"].get("bot_reply", "")
+            }
 
             # st.write("### AI Output for Step 1:")
-            st.write(step4_output)
+            # st.write(step4_output)
     # navigation_buttons()
     st.button("Next", on_click=next_step)
 
@@ -421,6 +521,11 @@ def step5():
     if "step4" not in st.session_state:
         st.warning("Please complete Step 4 first before proceeding.")
         return
+
+    st.text_area("**Previous AI Response:**", 
+         value=data.get("step5_output", ""), 
+         height=200, 
+         disabled=True)
     
     if st.button("Execute"):
         with st.spinner("Thinking..."):
@@ -449,18 +554,16 @@ def step5():
 
             # Store step1 output
             st.session_state["step5"] = step5_output
+            st.session_state["data"]["step5"]["bot_reply"] = step5_output
+            st.session_state["data"]["step5"] = {
+            "bot_reply": st.session_state["data"]["step5"].get("bot_reply", "")
+            }
 
             # st.write("### AI Output for Step 1:")
-            st.write(step5_output)
+            # st.write(step5_output)
 
     # navigation_buttons(last_step=True)
 
-def navigation_buttons(last_step=False):
-    """Display Previous and Next buttons for navigation"""
-    col1, col2 = st.columns(2)
-    col1.button("←", on_click=prev_step)
-    if not last_step:
-        col2.button("→", on_click=next_step)
 
 if st.session_state.step == 1:
     step0()
