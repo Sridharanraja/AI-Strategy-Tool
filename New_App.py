@@ -324,7 +324,7 @@ def step0():
             bot_reply = generate_response(full_prompt)
             bot_reply
                     # Store response in session state for step1
-        # st.session_state["step0"] = bot_reply  
+        st.session_state["step0"] = bot_reply  
         st.session_state["data"]["step0"]["bot_reply"] = bot_reply
         st.session_state["data"]["step0"] = {
             "organization_name": organization_name,
