@@ -573,6 +573,7 @@ def step5():
             """
             with st.spinner("Generating AI response..."):
                 step5_output = generate_response(full_prompt)
+                step5_output
 
             # Store step1 output
             st.session_state["step5"] = step5_output
