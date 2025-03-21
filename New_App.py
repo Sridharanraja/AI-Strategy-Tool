@@ -107,33 +107,33 @@ def process_docx(file_path):
 
 # Ensure Vector Store is Created
 if os.path.exists(VECTOR_STORE_PATH):
-    with st.status("🔄 Loading vector store..."):
-        try:
-            vector_store = FAISS.load_local(VECTOR_STORE_PATH, embeddings, allow_dangerous_deserialization=True)
-            # st.success("✅ Vector store loaded successfully!")
-        except Exception as e:
-            st.error(f"Error loading vector store: {e}")
-            vector_store = None
+    # with st.status("🔄 Loading vector store..."):
+    try:
+        vector_store = FAISS.load_local(VECTOR_STORE_PATH, embeddings, allow_dangerous_deserialization=True)
+        # st.success("✅ Vector store loaded successfully!")
+    except Exception as e:
+        st.error(f"Error loading vector store: {e}")
+        vector_store = None
 else:
-    with st.status("🚀 Creating a new vector store..."):
-        # st.warning("Vector store not found. Creating a new one...")
-        documents = load_documents()
-        
-        if not documents:
-            st.error("No documents found to initialize the vector store!")
-        else:
-            text_chunks = [(doc["source"], chunk) for doc in documents for chunk in text_splitter.split_text(doc["content"])]
+    # with st.status("🚀 Creating a new vector store..."):
+    # st.warning("Vector store not found. Creating a new one...")
+    documents = load_documents()
+    
+    if not documents:
+        st.error("No documents found to initialize the vector store!")
+    else:
+        text_chunks = [(doc["source"], chunk) for doc in documents for chunk in text_splitter.split_text(doc["content"])]
 
-            if text_chunks:
-                vector_store = FAISS.from_texts(
-                    [chunk[1] for chunk in text_chunks], 
-                    embeddings, 
-                    metadatas=[{"source": chunk[0]} for chunk in text_chunks]
-                )
-                vector_store.save_local(VECTOR_STORE_PATH)
-                # st.success("✅ New vector store created successfully!")
-            else:
-                st.error("No text chunks available to create the vector store!")
+        if text_chunks:
+            vector_store = FAISS.from_texts(
+                [chunk[1] for chunk in text_chunks], 
+                embeddings, 
+                metadatas=[{"source": chunk[0]} for chunk in text_chunks]
+            )
+            vector_store.save_local(VECTOR_STORE_PATH)
+            # st.success("✅ New vector store created successfully!")
+        else:
+            st.error("No text chunks available to create the vector store!")
 print("🎉 Completed setup!")
 
 
@@ -279,9 +279,11 @@ def step0():
         st.session_state["step0"] = bot_reply  
 
     navigation_buttons()
+    st.button("→", on_click=next_step)
         # st.session_state.ai_governance = generate_response(full_prompt)
 
 def step1():
+    navigation_buttons()
     st.header("Step 1: Construct Value Chains")
         # Ensure step0 output exists before proceeding
     if "step0" not in st.session_state:
@@ -311,8 +313,9 @@ def step1():
             # st.write("### AI Output for Step 1:")
             st.write(step1_output)
 
-    navigation_buttons()
+    # navigation_buttons()
 def step2():
+    navigation_buttons()
     st.header("Step 2: AI Use Case Identification")
     if "step1" not in st.session_state:
         st.warning("Please complete Step 1 first before proceeding.")
@@ -340,9 +343,10 @@ def step2():
 
             # st.write("### AI Output for Step 1:")
             st.write(step2_output)
-    navigation_buttons()
+    # navigation_buttons()
 
 def step3():
+    navigation_buttons()
     st.header("Step 3: AI Use case prioritization based on Effort-Impact Matrix")
     if "step2" not in st.session_state:
         st.warning("Please complete Step 2 first before proceeding.")
@@ -370,9 +374,10 @@ def step3():
 
             # st.write("### AI Output for Step 1:")
             st.write(step3_output)
-    navigation_buttons()
+    # navigation_buttons()
 
 def step4():
+    navigation_buttons()
     st.header("Step 4: Develop AI Strategy")
     if "step3" not in st.session_state:
         st.warning("Please complete Step 3 first before proceeding.")
@@ -400,9 +405,10 @@ def step4():
 
             # st.write("### AI Output for Step 1:")
             st.write(step4_output)
-    navigation_buttons()
+    # navigation_buttons()
 
 def step5():
+    navigation_buttons(last_step=True)
     st.header("Step 5: AI Implementation Plan")
     if "step4" not in st.session_state:
         st.warning("Please complete Step 4 first before proceeding.")
@@ -444,9 +450,9 @@ def step5():
 def navigation_buttons(last_step=False):
     """Display Previous and Next buttons for navigation"""
     col1, col2 = st.columns(2)
-    col1.button("Previous", on_click=prev_step)
+    col1.button("←", on_click=prev_step)
     if not last_step:
-        col2.button("Next", on_click=next_step)
+        col2.button("→", on_click=next_step)
 
 if st.session_state.step == 1:
     step0()
