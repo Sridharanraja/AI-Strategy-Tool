@@ -203,6 +203,9 @@ def step0():
     # Define global font size for text areas
     text_area_size = 14  # Change this to adjust font size
 
+    # Retrieve existing data or use defaults
+    data = st.session_state["data"]["step0"]
+
     # Apply CSS for all text areas
     st.markdown(
         f"""
@@ -395,6 +398,8 @@ def step2():
     if "step1" not in st.session_state:
         st.warning("Please complete Step 1 first before proceeding.")
         return
+    # Retrieve existing data or use defaults
+    data = st.session_state["data"]["step1"]
 
     st.text_area("**Previous AI Response:**", 
      value=data.get("step2_output", ""), 
@@ -438,6 +443,9 @@ def step3():
     if "step2" not in st.session_state:
         st.warning("Please complete Step 2 first before proceeding.")
         return
+
+    # Retrieve existing data or use defaults
+    data = st.session_state["data"]["step3"]
         
     st.text_area("**Previous AI Response:**", 
      value=data.get("step3_output", ""), 
@@ -480,7 +488,10 @@ def step4():
     if "step3" not in st.session_state:
         st.warning("Please complete Step 3 first before proceeding.")
         return
-
+        
+    # Retrieve existing data or use defaults
+    data = st.session_state["data"]["step4"]
+    
     st.text_area("**Previous AI Response:**", 
          value=data.get("step4_output", ""), 
          height=200, 
@@ -521,6 +532,9 @@ def step5():
     if "step4" not in st.session_state:
         st.warning("Please complete Step 4 first before proceeding.")
         return
+
+    # Retrieve existing data or use defaults
+    data = st.session_state["data"]["step5"]
 
     st.text_area("**Previous AI Response:**", 
          value=data.get("step5_output", ""), 
