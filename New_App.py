@@ -284,7 +284,7 @@ def step0():
 
 def step1():
     # navigation_buttons()
-    st.button("Next", on_click=next_step)
+    navigation_buttons(last_step=True)
     st.header("Step 1: Construct Value Chains")
         # Ensure step0 output exists before proceeding
     if "step0" not in st.session_state:
@@ -315,6 +315,7 @@ def step1():
             st.write(step1_output)
 
     # navigation_buttons()
+    st.button("Next", on_click=next_step)
 def step2():
     # navigation_buttons()
     navigation_buttons(last_step=True)
