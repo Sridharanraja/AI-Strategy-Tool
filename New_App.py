@@ -616,37 +616,37 @@ def step5():
          disabled=True)
     
     if st.button("Execute"):
-        with st.spinner("Thinking..."):
-            relevant_docs = retrieve_relevant_docs(st.session_state["step4"])
+        # with st.spinner("Thinking..."):
+        relevant_docs = retrieve_relevant_docs(st.session_state["step4"])
 
-            if relevant_docs and relevant_docs[0] and relevant_docs[1]:           
-                context = relevant_docs[1]  # Get document text
-            else:
-                context = "No relevant documents found. Using AI model only."        
-            # st.write("Here is the summary of the responses I have got from you:")
+        if relevant_docs and relevant_docs[0] and relevant_docs[1]:           
+            context = relevant_docs[1]  # Get document text
+        else:
+            context = "No relevant documents found. Using AI model only."        
+        # st.write("Here is the summary of the responses I have got from you:")
 
-            full_prompt = f"""
-            Context: {context}
-            For the AI strategy, create a detailed implementation plan. Please have details on the following topics as part of the implementation plan.            
-            1.	Assess AI skills
-            2.	Acquire AI skills
-            3.	Access AI resources
-            4.	Prioritize AI use cases
-            5.	Create an AI proof of concept
-            6.	Implement responsible AI
-            7.	Estimate delivery timelines 
-            {st.session_state.step4}
-            """
-            with st.spinner("Generating AI response..."):
-                step5_output = generate_response5(full_prompt)
-                step5_output
+        full_prompt = f"""
+        Context: {context}
+        For the AI strategy, create a detailed implementation plan. Please have details on the following topics as part of the implementation plan.            
+        1.	Assess AI skills
+        2.	Acquire AI skills
+        3.	Access AI resources
+        4.	Prioritize AI use cases
+        5.	Create an AI proof of concept
+        6.	Implement responsible AI
+        7.	Estimate delivery timelines 
+        {st.session_state.step4}
+        """
+        with st.spinner("Generating AI response..."):
+            step5_output = generate_response5(full_prompt)
+            step5_output
 
-            # Store step1 output
-            st.session_state["step5"] = step5_output
-            st.session_state["data"]["step5"]["step5_output"] = step5_output
-            st.session_state["data"]["step5"] = {
-            "bot_reply": st.session_state["data"]["step5"].get("step5_output", "")
-            }
+        # Store step1 output
+        st.session_state["step5"] = step5_output
+        st.session_state["data"]["step5"]["step5_output"] = step5_output
+        st.session_state["data"]["step5"] = {
+        "bot_reply": st.session_state["data"]["step5"].get("step5_output", "")
+        }
 
             # st.write("### AI Output for Step 1:")
             # st.write(step5_output)
