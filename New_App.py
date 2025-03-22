@@ -13,7 +13,7 @@ import pycountry
 import json
 import pdfkit
 import tempfile
-from io import BytesIO
+import io
 from reportlab.pdfgen import canvas
 
 
