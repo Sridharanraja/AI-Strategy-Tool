@@ -143,7 +143,7 @@ def generate_response5(prompt):
 
 #only for step6 -------------------------------------------
 def generate_response6(prompt):
-    client, model_id = models["mixtral-8x7b-32768"]  # Select the correct model
+    client, model_id = models["Llama 3 (8B)"]  # Select the correct model
     
     # Define the AI's role and expertise
     system_message = {
@@ -351,10 +351,10 @@ def step0():
     sub_industries = filtered_df["sub_industry"].unique().tolist()
 
     # Q4c: Industry
-    industry_groups = st.selectbox("**Q4c. Which industry best describes your business model?**",industry_groups)
+    industry_groups = st.multiselect("**Q4c. Which industry best describes your business model?**",industry_groups)
 
     # Q4d: Sub-Industry
-    sub_industry = st.selectbox("**Q4d. Which sub-industry best describes your business model?**", 
+    sub_industry = st.multiselect("**Q4d. Which sub-industry best describes your business model?**", 
                                 sub_industries, 
                                 index=0)
 
