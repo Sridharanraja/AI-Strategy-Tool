@@ -56,7 +56,7 @@ def navigation_buttons(last_step=False):
 
 
 
-API = 'key_01jmqds7qyf0brnv3hmxw8xr10' #'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'
+API = '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' #'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'
 
 # Initialize Groq Client
 llm = Groq(api_key=API)
