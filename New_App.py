@@ -62,7 +62,9 @@ API = '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' #'gsk_uZ1zee2LF
 llm = Groq(api_key=API)
 
 models = {
-    "Llama 3 (8B)": (llm, "llama3-8b-8192")}
+    "Llama 3 (8B)": (llm, "llama3-8b-8192"),
+    "Deepseek 32B": (llm, "deepseek-r1-distill-qwen-32b")
+}
 
 
 
@@ -111,7 +113,7 @@ def generate_response(prompt):
 
 #only for step5 -------------------------------------------
 def generate_response5(prompt):
-    client, model_id = models["Llama 3 (8B)"]  # Select the correct model
+    client, model_id = models["Deepseek 32B"]  # Select the correct model
     
     # Define the AI's role and expertise
     system_message = {
