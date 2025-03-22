@@ -458,7 +458,7 @@ def step2():
 
             full_prompt = f"""
             Context: {context}
-            For the identified Value chains in the previous step, Convert these value chains into AI use cases and provide the list {st.session_state.step1}
+            For the identified Value chains in the previous step, Create top 5 AI use cases. Provide detail business justification for each of these use cases. {st.session_state.step1}
             """
             with st.spinner("Generating AI response..."):
                 step2_output = generate_response(full_prompt)
