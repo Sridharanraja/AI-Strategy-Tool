@@ -13,21 +13,36 @@ import pycountry
 import json
 import pdfkit
 import tempfile
+from io import BytesIO
+from reportlab.pdfgen import canvas
 
 
 # Initialize Streamlit app
 st.set_page_config(page_title="AI Strategy Planning Tool", page_icon="\U0001F9E0")
 
-# Function to generate PDF from text
-def create_pdf(text):
-    pdf_content = f"<h2>Generated AI Response</h2><p>{text.replace('\n', '<br>')}</p>"
+# Function to generate and download PDF
+def generate_and_download_pdf(text, filename):
+    if not text:
+        st.warning("No data available to download!")
+        return
     
-    # Create a temporary file to save PDF
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
-        pdf_path = tmpfile.name
-        pdfkit.from_string(pdf_content, pdf_path)
+    # Create a PDF buffer in memory
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer)
+    pdf.setFont("Helvetica", 12)
+    pdf.drawString(100, 800, "Generated AI Response")
     
-    return pdf_path
+    # Split long text into multiple lines
+    y_position = 780
+    for line in text.split("\n"):
+        pdf.drawString(50, y_position, line)
+        y_position -= 20  # Move text downward
+
+    pdf.save()
+    buffer.seek(0)
+
+    # Provide download button
+    st.download_button(label="📥 Download PDF", data=buffer, file_name=filename, mime="application/pdf")
 
 
 
@@ -455,9 +470,8 @@ def step0():
             "bot_reply": st.session_state["data"]["step0"].get("bot_reply", "")
         }
 
-    with open(pdf_path, "rb") as pdf_file:
-        st.download_button(label="Download PDF", data=pdf_file, file_name="AI_Response_Step0.pdf")
-
+    generate_and_download_pdf(st.session_state["data"]["step0"]["bot_reply"], "AI_Report_Step0.pdf")
+    
     # navigation_buttons()
     st.button("Next", on_click=next_step)
         # st.session_state.ai_governance = generate_response(full_prompt)
