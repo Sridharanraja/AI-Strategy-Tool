@@ -455,8 +455,8 @@ def step0():
             "bot_reply": st.session_state["data"]["step0"].get("bot_reply", "")
         }
 
-     with open(pdf_path, "rb") as pdf_file:
-         st.download_button(label="Download PDF", data=pdf_file, file_name="AI_Response_Step0.pdf", mime="application/pdf")
+     # with open(pdf_path, "rb") as pdf_file:
+     st.download_button(label="Download PDF", data=pdf_file, file_name="AI_Response_Step0.pdf")#, mime="application/pdf")
 
 
     # navigation_buttons()
