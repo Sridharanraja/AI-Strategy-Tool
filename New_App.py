@@ -11,10 +11,24 @@ from reportlab.pdfgen import canvas
 import pandas as pd
 import pycountry
 import json
+import pdfkit
+import tempfile
 
 
 # Initialize Streamlit app
 st.set_page_config(page_title="AI Strategy Planning Tool", page_icon="\U0001F9E0")
+
+# Function to generate PDF from text
+def create_pdf(text):
+    pdf_content = f"<h2>Generated AI Response</h2><p>{text.replace('\n', '<br>')}</p>"
+    
+    # Create a temporary file to save PDF
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
+        pdf_path = tmpfile.name
+        pdfkit.from_string(pdf_content, pdf_path)
+    
+    return pdf_path
+
 
 
 # --- Initialize Session State ---
@@ -440,6 +454,9 @@ def step0():
             "business_challenges": business_challenges,
             "bot_reply": st.session_state["data"]["step0"].get("bot_reply", "")
         }
+
+     with open(pdf_path, "rb") as pdf_file:
+        st.download_button(label="Download PDF", data=pdf_file, file_name="AI_Response_Step0.pdf", mime="application/pdf")
 
 
     # navigation_buttons()
