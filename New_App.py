@@ -516,7 +516,7 @@ def step4():
 
             full_prompt = f"""
             Context: {context}
-            For the use cases in the buckets Quick Wins and Strategic Projects, develop a detailed AI strategy and action plan {st.session_state.step3}
+            For the use cases in the buckets high effort, high impact and low effort, high impact, develop a detailed AI strategy and implementation the action plan {st.session_state.step3}
             """
             with st.spinner("Generating AI response..."):
                 step4_output = generate_response(full_prompt)
