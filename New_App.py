@@ -456,8 +456,7 @@ def step0():
         }
 
      # with open(pdf_path, "rb") as pdf_file:
-     st.download_button(label="Download PDF", data=pdf_file, file_name="AI_Response_Step0.pdf")#, mime="application/pdf")
-
+    st.download_button(label="Download PDF", data=pdf_file, file_name="AI_Response_Step0.pdf")
 
     # navigation_buttons()
     st.button("Next", on_click=next_step)
