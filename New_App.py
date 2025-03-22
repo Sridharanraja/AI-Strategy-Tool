@@ -351,10 +351,10 @@ def step0():
     sub_industries = filtered_df["sub_industry"].unique().tolist()
 
     # Q4c: Industry
-    industry_groups = st.multiselect("**Q4c. Which industry best describes your business model?**",industry_groups,index=0)
+    industry_groups = st.selectbox("**Q4c. Which industry best describes your business model?**",industry_groups)#,index=0)
 
     # Q4d: Sub-Industry
-    sub_industry = st.multiselect("**Q4d. Which sub-industry best describes your business model?**", 
+    sub_industry = st.selectbox("**Q4d. Which sub-industry best describes your business model?**", 
                                 sub_industries, 
                                 index=0)
 
