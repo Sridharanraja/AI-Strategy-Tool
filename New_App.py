@@ -689,7 +689,7 @@ def step5():
 def step6():
     navigation_buttons(last_step=True)
     st.header("Step 6: AI Technology Implementation Plan")
-    if "step4" not in st.session_state:
+    if "step5" not in st.session_state:
         st.warning("Please complete Step 5 first before proceeding.")
         return
 
