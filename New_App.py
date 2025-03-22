@@ -128,7 +128,8 @@ def download_pdf_button(step_name, file_name):
             mime="application/pdf",
         )
     else:
-        st.warning(f"No data available for {file_name}, please execute first.")
+        print("No data available for {file_name}, please execute first.")
+        # st.warning(f"No data available for {file_name}, please execute first.")
 
 
 # --- Initialize Session State ---
@@ -603,7 +604,7 @@ def step1():
 
             # st.write("### AI Output for Step 1:")
             # st.write(step1_output)
-
+    download_pdf_button("step1", "Step1_Report")
     # navigation_buttons()
     st.button("Next", on_click=next_step)
 def step2():
@@ -649,6 +650,7 @@ def step2():
 
             # st.write("### AI Output for Step 1:")
             # st.write(step2_output)
+    download_pdf_button("step2", "Step2_Report")
     # navigation_buttons()
     st.button("Next", on_click=next_step)
 
@@ -695,6 +697,7 @@ def step3():
 
             # st.write("### AI Output for Step 1:")
             # st.write(step3_output)
+    download_pdf_button("step3", "Step3_Report")
     # navigation_buttons()
     st.button("Next", on_click=next_step)
 
@@ -741,6 +744,8 @@ def step4():
 
             # st.write("### AI Output for Step 1:")
             # st.write(step4_output)
+
+    download_pdf_button("step4", "Step4_Report")
     # navigation_buttons()
     st.button("Next", on_click=next_step)
 
@@ -794,7 +799,7 @@ def step5():
 
             # st.write("### AI Output for Step 1:")
             # st.write(step5_output)
-
+    download_pdf_button("step5", "Step5_Report")
     # navigation_buttons(last_step=True)
     st.button("Next", on_click=next_step)
 
@@ -843,7 +848,7 @@ def step6():
 
             # st.write("### AI Output for Step 1:")
             # st.write(step5_output)
-
+    download_pdf_button("step6", "Step6_Report")
     # navigation_buttons(last_step=True)
     # st.button("Next", on_click=next_step)
 
