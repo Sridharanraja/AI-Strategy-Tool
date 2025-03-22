@@ -26,7 +26,8 @@ if "data" not in st.session_state:
         "step2": {},
         "step3": {},
         "step4": {},
-        "step5": {}
+        "step5": {},
+        "step6": {}
     }
 
 
@@ -42,7 +43,7 @@ def go_to_step(step):
     st.session_state.step = step
 
 def next_step():
-    st.session_state["step"] = min(st.session_state["step"] + 1, 6)
+    st.session_state["step"] = min(st.session_state["step"] + 1, 7)
 
 def prev_step():
     st.session_state["step"] = max(st.session_state["step"] - 1, 1)
@@ -63,7 +64,8 @@ llm = Groq(api_key=API)
 
 models = {
     "Llama 3 (8B)": (llm, "llama3-8b-8192"),
-    "llama-3 (versatile)": (llm, "llama-3.3-70b-versatile")
+    "llama-3 (versatile)": (llm, "llama-3.3-70b-versatile"),
+    "mixtral-8x7b-32768": (llm, "mixtral-8x7b-32768")
 }
 
 
@@ -121,6 +123,35 @@ def generate_response5(prompt):
         "content": ("""
         You are an AI Implementation expert with strong project and program management abilities.
         Create a detailed Project plan with milestones, schedule, resources and budget requirements
+        """
+        )
+    }
+    
+    # User's input
+    user_message = {"role": "user", "content": prompt}
+
+    # Generate response
+    response = client.chat.completions.create(
+        model=model_id,
+        messages=[system_message, user_message],
+        temperature=0.5,
+        max_tokens=2500
+    )
+
+    return response.choices[0].message.content
+#----------------------------------------------------------
+
+#only for step6 -------------------------------------------
+def generate_response6(prompt):
+    client, model_id = models["mixtral-8x7b-32768"]  # Select the correct model
+    
+    # Define the AI's role and expertise
+    system_message = {
+        "role": "system",
+        "content": ("""
+        You are a Technology expert and have worked in companies like Microsoft and AWS.
+        Please provide detailed technology implementation plan when asked to do so after accessing the companies Data infrastructure,
+        Cloud infrastructure, AI infrastructure and Integration infrastructure
         """
         )
     }
@@ -652,6 +683,56 @@ def step5():
             # st.write(step5_output)
 
     # navigation_buttons(last_step=True)
+    st.button("Next", on_click=next_step)
+
+
+def step6():
+    navigation_buttons(last_step=True)
+    st.header("Step 6: AI Technology Implementation Plan")
+    if "step4" not in st.session_state:
+        st.warning("Please complete Step 5 first before proceeding.")
+        return
+
+    # Retrieve existing data or use defaults
+    data = st.session_state["data"]["step6"]
+
+    st.text_area("**Previous AI Response:**", 
+         value=data.get("step6_output", ""), 
+         height=100, 
+         disabled=True)
+    
+    if st.button("Execute"):
+        # with st.spinner("Thinking..."):
+        relevant_docs = retrieve_relevant_docs(st.session_state["step5"])
+
+        if relevant_docs and relevant_docs[0] and relevant_docs[1]:           
+            context = relevant_docs[1]  # Get document text
+        else:
+            context = "No relevant documents found. Using AI model only."        
+        # st.write("Here is the summary of the responses I have got from you:")
+
+        full_prompt = f"""
+        Context: {context}
+        Create a detailed Technology Implementation Project plan which should implement components like Data infrastructure,
+        Cloud infrastructure, AI infrastructure and Integration infrastructure.        
+        {st.session_state.step5}
+        """
+        with st.spinner("Generating AI response..."):
+            step5_output = generate_response6(full_prompt)
+            step5_output
+
+        # Store step1 output
+        st.session_state["step6"] = step6_output
+        st.session_state["data"]["step6"]["step6_output"] = step6_output
+        st.session_state["data"]["step6"] = {
+        "bot_reply": st.session_state["data"]["step6"].get("step6_output", "")
+        }
+
+            # st.write("### AI Output for Step 1:")
+            # st.write(step5_output)
+
+    # navigation_buttons(last_step=True)
+    # st.button("Next", on_click=next_step)
 
 
 if st.session_state.step == 1:
@@ -666,3 +747,5 @@ elif st.session_state.step == 5:
     step4()
 elif st.session_state.step == 6:
     step5()
+elif st.session_state.step == 7:
+    step6()
