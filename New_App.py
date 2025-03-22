@@ -55,31 +55,20 @@ def generate_pdf(step_name, step_data):
     return pdf_buffer  # Return the generated PDF buffer
 
 
-def download_pdf_button(step_name):
+def download_pdf_button(step_name, file_name):
     """Button to download PDF for a specific step."""
     step_data = st.session_state["data"].get(step_name, {}).get("bot_reply", "")
 
     if step_data:
         pdf_file = generate_pdf(step_name, step_data)
         st.download_button(
-            label=f"📥 Download {step_name} Report as PDF",
+            label=f"📥 Download {file_name}",
             data=pdf_file,
-            file_name=f"{step_name}_Report.pdf",
+            file_name=f"{file_name}.pdf",
             mime="application/pdf",
         )
     else:
-        st.warning(f"No data available for {step_name}, please execute first.")
-
-for i in range(7):
-    step_name = f"step{i}"
-    st.subheader(f"📑 {step_name} Report")
-    
-    # Display stored content (if available)
-    step_content = st.session_state["data"].get(step_name, {}).get("bot_reply", "No Data Generated Yet")
-    st.text_area(f"Report Content for {step_name}:", step_content, height=150)
-
-    # Download button for each step
-    download_pdf_button(step_name)
+        st.warning(f"No data available for {file_name}, please execute first.")
 
 
 # --- Initialize Session State ---
@@ -505,7 +494,7 @@ def step0():
             "business_challenges": business_challenges,
             "bot_reply": st.session_state["data"]["step0"].get("bot_reply", "")
         }
-    
+    download_pdf_button("step0", "Step0_Report")
     # navigation_buttons()
     st.button("Next", on_click=next_step)
         # st.session_state.ai_governance = generate_response(full_prompt)
