@@ -63,8 +63,7 @@ llm = Groq(api_key=API)
 
 models = {
     "Llama 3 (8B)": (llm, "llama3-8b-8192")}
-role = {"""
-"""}
+
 
 
 # def generate_response(prompt):
