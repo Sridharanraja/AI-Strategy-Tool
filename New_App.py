@@ -350,7 +350,9 @@ def step0():
         **Business Challenges & Opportunities:**
         {business_challenges}
 
-        Based on this information and information available on the internet, please provide detail summary. The summary should include topics like Business challenges and Goals, Current AI readynes areas for improvement and High level recommendations.
+        Based on this information and information available on the internet,
+        please provide detail summary. The summary should include topics like Business challenges and Goals,
+        Current AI readyness, potential use of AI and areas for improvement and High level recommendations to make the company AI ready for competitive positioning and growth.
         """
 
         with st.spinner("Generating AI response..."):  # Show loading indicator
