@@ -65,7 +65,7 @@ llm = Groq(api_key=API)
 models = {
     "Llama 3 (8B)": (llm, "llama3-8b-8192"),
     "llama-3 (versatile)": (llm, "llama-3.3-70b-versatile"),
-    "mixtral-8x7b-32768": (llm, "mixtral-8x7b-32768")
+    "mixtral-8x7b-32768": (llm, "llama3-8b-8192")
 }
 
 
