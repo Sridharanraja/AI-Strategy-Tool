@@ -505,8 +505,6 @@ def step0():
             "business_challenges": business_challenges,
             "bot_reply": st.session_state["data"]["step0"].get("bot_reply", "")
         }
-    bot_reply_save = st.session_state["data"]["step0"]["bot_reply"]
-    generate_and_download_pdf(bot_reply_save, "AI_Report_Step0.pdf")
     
     # navigation_buttons()
     st.button("Next", on_click=next_step)
