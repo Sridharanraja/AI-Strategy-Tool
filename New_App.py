@@ -551,7 +551,7 @@ def step4():
 
             full_prompt = f"""
             Context: {context}
-            For the use cases identified in the High impact category, develop a detailed AI strategy and implementation the action plan. The AI statergy should include components like Vision and Goals, KPI's and Metrics, Current AI Readyness Assessment of capabilities, AI Use cases for consideration, Required AI infrastructure and technologies, AI Roadmap. Include a detailed section on Data and Infrastructure requirement, Talent and Skills requirement, Ethics and Governance, Change Management and Adoption,  Continuous Monitoring and Evaluation. {st.session_state.step3}
+            For the use cases identified in the High impact category, develop a detailed AI strategy and implementation the action plan. The AI statergy should include components like Vision and Goals, KPI's and Metrics, Current AI Readyness Assessment of capabilities,  Required AI infrastructure and technologies, AI Roadmap. Include a detailed section on Data and Infrastructure requirement, Talent and Skills requirement, Ethics and Governance, Change Management and Adoption, Continuous Monitoring and Evaluation {st.session_state.step3}
             """
             with st.spinner("Generating AI response..."):
                 step4_output = generate_response(full_prompt)
