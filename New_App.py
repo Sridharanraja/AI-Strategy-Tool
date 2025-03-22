@@ -63,7 +63,7 @@ llm = Groq(api_key=API)
 
 models = {
     "Llama 3 (8B)": (llm, "llama3-8b-8192"),
-    "Deepseek 32B": (llm, "deepseek-r1-distill-qwen-32b")
+    "llama-3 (versatile)": (llm, "llama-3.3-70b-versatile")
 }
 
 
@@ -113,7 +113,7 @@ def generate_response(prompt):
 
 #only for step5 -------------------------------------------
 def generate_response5(prompt):
-    client, model_id = models["Deepseek 32B"]  # Select the correct model
+    client, model_id = models["llama-3 (versatile)"]  # Select the correct model
     
     # Define the AI's role and expertise
     system_message = {
