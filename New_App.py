@@ -505,7 +505,7 @@ def step3():
 
             full_prompt = f"""
             Context: {context}
-            For the Identified use cases in the previous step, Categorize the AI use cases  into 4 buckets based on the principles of the effort-impact matrix. Provide detailed rationale for the categorization. {st.session_state.step2}
+            For the Identified use cases in the previous step, Categorize the AI use cases  into 4 buckets based on the principles of the effort-impact matrix. Provide detailed rationale and explaination for the categorization. {st.session_state.step2}
             """
             with st.spinner("Generating AI response..."):
                 step3_output = generate_response(full_prompt)
