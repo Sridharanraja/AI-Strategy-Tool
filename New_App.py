@@ -20,30 +20,66 @@ from reportlab.pdfgen import canvas
 # Initialize Streamlit app
 st.set_page_config(page_title="AI Strategy Planning Tool", page_icon="\U0001F9E0")
 
-# Function to generate and download PDF
-def generate_and_download_pdf(text, filename):
-    if not text:
-        st.warning("No data available to download!")
-        return
+
+def generate_pdf(step_name, step_data):
+    """Generate a PDF dynamically for each step based on its data."""
+    pdf_buffer = io.BytesIO()
+    c = canvas.Canvas(pdf_buffer, pagesize=letter)
+    c.setFont("Helvetica", 12)
+
+    y_position = 750  # Initial Y position
+
+    # Title
+    c.drawString(200, y_position, f"Report: {step_name}")
+    c.line(50, y_position - 10, 550, y_position - 10)  # Underline
+    y_position -= 30  # Move cursor down
+
+    # Insert Step Data
+    if step_data:
+        text_lines = step_data.split("\n")  # Handle multi-line text
+        for line in text_lines:
+            c.drawString(50, y_position, line)
+            y_position -= 15  # Move down for each line
+
+            # If page overflow, create a new page
+            if y_position < 50:
+                c.showPage()
+                c.setFont("Helvetica", 12)
+                y_position = 750
+    else:
+        c.drawString(50, y_position, "No Data Available")
+
+    c.save()
+    pdf_buffer.seek(0)
     
-    # Create a PDF buffer in memory
-    buffer = BytesIO()
-    pdf = canvas.Canvas(buffer)
-    pdf.setFont("Helvetica", 12)
-    pdf.drawString(100, 800, "Generated AI Response")
+    return pdf_buffer  # Return the generated PDF buffer
+
+
+def download_pdf_button(step_name):
+    """Button to download PDF for a specific step."""
+    step_data = st.session_state["data"].get(step_name, {}).get("bot_reply", "")
+
+    if step_data:
+        pdf_file = generate_pdf(step_name, step_data)
+        st.download_button(
+            label=f"📥 Download {step_name} Report as PDF",
+            data=pdf_file,
+            file_name=f"{step_name}_Report.pdf",
+            mime="application/pdf",
+        )
+    else:
+        st.warning(f"No data available for {step_name}, please execute first.")
+
+for i in range(7):
+    step_name = f"step{i}"
+    st.subheader(f"📑 {step_name} Report")
     
-    # Split long text into multiple lines
-    y_position = 780
-    for line in text.split("\n"):
-        pdf.drawString(50, y_position, line)
-        y_position -= 20  # Move text downward
+    # Display stored content (if available)
+    step_content = st.session_state["data"].get(step_name, {}).get("bot_reply", "No Data Generated Yet")
+    st.text_area(f"Report Content for {step_name}:", step_content, height=150)
 
-    pdf.save()
-    buffer.seek(0)
-
-    # Provide download button
-    st.download_button(label="📥 Download PDF", data=buffer, file_name=filename, mime="application/pdf")
-
+    # Download button for each step
+    download_pdf_button(step_name)
 
 
 # --- Initialize Session State ---
