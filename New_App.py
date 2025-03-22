@@ -15,45 +15,105 @@ import pdfkit
 import tempfile
 import io
 from reportlab.pdfgen import canvas
+import textwrap 
 
 
 # Initialize Streamlit app
 st.set_page_config(page_title="AI Strategy Planning Tool", page_icon="\U0001F9E0")
 
 
+# def generate_pdf(step_name, step_data):
+#     """Generate a PDF dynamically for each step based on its data."""
+#     pdf_buffer = io.BytesIO()
+#     c = canvas.Canvas(pdf_buffer, pagesize=letter)
+#     c.setFont("Helvetica", 12)
+
+#     y_position = 750  # Initial Y position
+
+#     # Title
+#     c.drawString(200, y_position, f"Report: {step_name}")
+#     c.line(50, y_position - 10, 550, y_position - 10)  # Underline
+#     y_position -= 30  # Move cursor down
+
+#     # Insert Step Data
+#     if step_data:
+#         text_lines = step_data.split("\n")  # Handle multi-line text
+#         for line in text_lines:
+#             c.drawString(50, y_position, line)
+#             y_position -= 15  # Move down for each line
+
+#             # If page overflow, create a new page
+#             if y_position < 50:
+#                 c.showPage()
+#                 c.setFont("Helvetica", 12)
+#                 y_position = 750
+#     else:
+#         c.drawString(50, y_position, "No Data Available")
+
+#     c.save()
+#     pdf_buffer.seek(0)
+    
+#     return pdf_buffer  # Return the generated PDF buffer
+
+
+# def download_pdf_button(step_name, file_name):
+#     """Button to download PDF for a specific step."""
+#     step_data = st.session_state["data"].get(step_name, {}).get("bot_reply", "")
+
+#     if step_data:
+#         pdf_file = generate_pdf(step_name, step_data)
+#         st.download_button(
+#             label=f"📥 Download {file_name}",
+#             data=pdf_file,
+#             file_name=f"{file_name}.pdf",
+#             mime="application/pdf",
+#         )
+#     else:
+#         st.warning(f"No data available for {file_name}, please execute first.")
+
 def generate_pdf(step_name, step_data):
-    """Generate a PDF dynamically for each step based on its data."""
-    pdf_buffer = io.BytesIO()
+    """Generate a properly formatted PDF for each step."""
+    pdf_buffer = io.BytesIO()  # Create an in-memory buffer
     c = canvas.Canvas(pdf_buffer, pagesize=letter)
-    c.setFont("Helvetica", 12)
+    
+    # Define fonts
+    normal_font = "Helvetica"
+    bold_font = "Helvetica-Bold"
 
     y_position = 750  # Initial Y position
-
-    # Title
+    c.setFont(bold_font, 14)  # Title font
     c.drawString(200, y_position, f"Report: {step_name}")
     c.line(50, y_position - 10, 550, y_position - 10)  # Underline
     y_position -= 30  # Move cursor down
 
-    # Insert Step Data
+    # Process and format text
+    c.setFont(normal_font, 12)  # Reset to normal font
     if step_data:
-        text_lines = step_data.split("\n")  # Handle multi-line text
-        for line in text_lines:
-            c.drawString(50, y_position, line)
-            y_position -= 15  # Move down for each line
+        for line in step_data.split("\n"):
+            # Detect bold text using Markdown format (**bold**)
+            if line.startswith("**") and line.endswith("**"):
+                c.setFont(bold_font, 12)  # Apply bold font
+                line = line.replace("**", "")  # Remove asterisks
+            else:
+                c.setFont(normal_font, 12)  # Reset to normal font
 
-            # If page overflow, create a new page
-            if y_position < 50:
-                c.showPage()
-                c.setFont("Helvetica", 12)
-                y_position = 750
+            wrapped_lines = textwrap.wrap(line, width=90)  # Wrap long text
+            for wrapped_line in wrapped_lines:
+                c.drawString(50, y_position, wrapped_line)
+                y_position -= 15  # Move down for each line
+
+                # Handle page overflow
+                if y_position < 50:
+                    c.showPage()
+                    c.setFont(normal_font, 12)  # Reset font on new page
+                    y_position = 750
     else:
         c.drawString(50, y_position, "No Data Available")
 
     c.save()
-    pdf_buffer.seek(0)
+    pdf_buffer.seek(0)  # Move buffer position to start
     
     return pdf_buffer  # Return the generated PDF buffer
-
 
 def download_pdf_button(step_name, file_name):
     """Button to download PDF for a specific step."""
