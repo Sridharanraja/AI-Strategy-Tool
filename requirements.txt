@@ -25,3 +25,4 @@ langchain_community
 crewai
 pysqlite3-binary
 pycountry
+pdfkit
