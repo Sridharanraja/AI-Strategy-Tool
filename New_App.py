@@ -117,7 +117,7 @@ def generate_pdf(step_name, step_data):
 
 def download_pdf_button(step_name, file_name):
     """Button to download PDF for a specific step."""
-    step_data = st.session_state["data"].get(step_name, {}).get("bot_reply", "")
+    step_data = step_name #st.session_state["data"].get(step_name, {}).get("bot_reply", "")
 
     if step_data:
         pdf_file = generate_pdf(step_name, step_data)
@@ -604,7 +604,7 @@ def step1():
 
             # st.write("### AI Output for Step 1:")
             # st.write(step1_output)
-    download_pdf_button("step1", "Step1_Report")
+    download_pdf_button(st.session_state["data"].get(step1).get("bot_reply", ""), "Step1_Report")
     # navigation_buttons()
     st.button("Next", on_click=next_step)
 def step2():
