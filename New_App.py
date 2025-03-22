@@ -378,7 +378,7 @@ def step1():
 
             full_prompt = f"""
             Context: {context}
-            Construct value chains and list primary and support activities {st.session_state.step0}
+            Construct value chains for the problem statement and business challenges identified in previous step and list primary and support activities {st.session_state.step0}
             """
             with st.spinner("Generating AI response..."):
                 step1_output = generate_response(full_prompt)
