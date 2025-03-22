@@ -109,6 +109,35 @@ def generate_response(prompt):
     return response.choices[0].message.content
 
 
+#only for step5 -------------------------------------------
+def generate_response5(prompt):
+    client, model_id = models["Llama 3 (8B)"]  # Select the correct model
+    
+    # Define the AI's role and expertise
+    system_message = {
+        "role": "system",
+        "content": ("""
+        You are an AI Implementation expert with strong project and program management abilities.
+        Create a detailed Project plan with milestones, schedule, resources and budget requirements
+        """
+        )
+    }
+    
+    # User's input
+    user_message = {"role": "user", "content": prompt}
+
+    # Generate response
+    response = client.chat.completions.create(
+        model=model_id,
+        messages=[system_message, user_message],
+        temperature=0.5,
+        max_tokens=2500
+    )
+
+    return response.choices[0].message.content
+#----------------------------------------------------------
+
+
 # Load and Process Documents (adapt path to your environment)
 DATA_DIR = "./sheets/DATA/NEW/"   # Update this to your folder containing docx/odt/doc files
 VECTOR_STORE_PATH = "NEW/vector_store"
@@ -607,7 +636,7 @@ def step5():
             {st.session_state.step4}
             """
             with st.spinner("Generating AI response..."):
-                step5_output = generate_response(full_prompt)
+                step5_output = generate_response5(full_prompt)
                 step5_output
 
             # Store step1 output
