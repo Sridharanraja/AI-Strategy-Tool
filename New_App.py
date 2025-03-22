@@ -115,9 +115,10 @@ def generate_pdf(step_name, step_data):
     
     return pdf_buffer  # Return the generated PDF buffer
 
-def download_pdf_button(step_name, file_name):
+def download_pdf_button(step_name, data_key, file_name):
+# def download_pdf_button(step_name, file_name):
     """Button to download PDF for a specific step."""
-    step_data = step_name #st.session_state["data"].get(step_name, {}).get("bot_reply", "")
+    step_data = st.session_state["data"].get(step_name, {}).get(data_key, "")  #get("bot_reply", "")
 
     if step_data:
         pdf_file = generate_pdf(step_name, step_data)
@@ -555,7 +556,7 @@ def step0():
             "business_challenges": business_challenges,
             "bot_reply": st.session_state["data"]["step0"].get("bot_reply", "")
         }
-    download_pdf_button("step0", "Step0_Report")
+    download_pdf_button("step0","bot_reply","Step0_Report")
     # navigation_buttons()
     st.button("Next", on_click=next_step)
         # st.session_state.ai_governance = generate_response(full_prompt)
@@ -604,7 +605,7 @@ def step1():
 
             # st.write("### AI Output for Step 1:")
             # st.write(step1_output)
-    download_pdf_button(st.session_state["data"].get(step1).get("bot_reply", ""), "Step1_Report")
+    download_pdf_button("step1","step1_output","Step1_Report")
     # navigation_buttons()
     st.button("Next", on_click=next_step)
 def step2():
@@ -650,7 +651,7 @@ def step2():
 
             # st.write("### AI Output for Step 1:")
             # st.write(step2_output)
-    download_pdf_button("step2", "Step2_Report")
+    download_pdf_button("step2","step2_output","Step2_Report")
     # navigation_buttons()
     st.button("Next", on_click=next_step)
 
@@ -697,7 +698,7 @@ def step3():
 
             # st.write("### AI Output for Step 1:")
             # st.write(step3_output)
-    download_pdf_button("step3", "Step3_Report")
+    download_pdf_button("step3","step3_output","Step3_Report")
     # navigation_buttons()
     st.button("Next", on_click=next_step)
 
@@ -745,7 +746,7 @@ def step4():
             # st.write("### AI Output for Step 1:")
             # st.write(step4_output)
 
-    download_pdf_button("step4", "Step4_Report")
+    download_pdf_button("step4","step4_output","Step4_Report")
     # navigation_buttons()
     st.button("Next", on_click=next_step)
 
@@ -799,7 +800,7 @@ def step5():
 
             # st.write("### AI Output for Step 1:")
             # st.write(step5_output)
-    download_pdf_button("step5", "Step5_Report")
+    download_pdf_button("step5","step5_output","Step5_Report")
     # navigation_buttons(last_step=True)
     st.button("Next", on_click=next_step)
 
@@ -848,7 +849,7 @@ def step6():
 
             # st.write("### AI Output for Step 1:")
             # st.write(step5_output)
-    download_pdf_button("step6", "Step6_Report")
+    download_pdf_button("step6","step6_output","Step6_Report")
     # navigation_buttons(last_step=True)
     # st.button("Next", on_click=next_step)
 
