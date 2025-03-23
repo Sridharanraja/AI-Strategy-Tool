@@ -155,7 +155,7 @@ def download_all_pdfs():
             pdf_file = generate_pdf(step_name, step_data)
 
             # Wrap bytes in BytesIO object
-            pdf_buffer = io.BytesIO(pdf_bytes)
+            pdf_buffer = io.BytesIO(pdf_file)
             pdf_buffer.seek(0)         
 
             merger.append(pdf_buffer)
