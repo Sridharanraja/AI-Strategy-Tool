@@ -132,6 +132,52 @@ def download_pdf_button(step_name, data_key, file_name):
         print("No data available for {file_name}, please execute first.")
         # st.warning(f"No data available for {file_name}, please execute first.")
 
+def download_all_pdfs():
+    """Combine all step PDFs into a single PDF and download."""
+    merger = PdfMerger()
+    pdf_buffers = []
+
+    # List of step names and corresponding keys
+    steps = [
+        ("step0", "bot_reply", "Step0_Report"),
+        ("step1", "step1_output", "Step1_Report"),
+        ("step2", "step2_output", "Step2_Report"),
+        ("step3", "step3_output", "Step3_Report"),
+        ("step4", "step4_output", "Step4_Report"),
+        ("step5", "step5_output", "Step5_Report"),
+        ("step6", "step6_output", "Step6_Report")
+    ]
+
+    # Generate individual PDFs and add them to the merger
+    for step_name, data_key, file_name in steps:
+        step_data = st.session_state["data"].get(step_name, {}).get(data_key, "")
+        
+        if step_data:
+            pdf_file = generate_pdf(step_name, step_data)
+            
+            # Store in memory buffer
+            buffer = io.BytesIO(pdf_file)
+            buffer.seek(0)
+            
+            pdf_buffers.append(buffer)
+            merger.append(buffer)
+    
+    # Save the merged PDF into a new buffer
+    merged_pdf = io.BytesIO()
+    merger.write(merged_pdf)
+    merger.close()
+
+    # Set the buffer to the beginning before downloading
+    merged_pdf.seek(0)
+
+    # Button to download the merged PDF
+    st.download_button(
+        label="📥 Download All Reports",
+        data=merged_pdf,
+        file_name="All_Steps_Reports.pdf",
+        mime="application/pdf"
+    )
+
 
 # --- Initialize Session State ---
 if "data" not in st.session_state:
@@ -881,6 +927,7 @@ def step6():
             # st.write("### AI Output for Step 1:")
             # st.write(step5_output)
     download_pdf_button("step6","step6_output","Step6_Report")
+    download_all_pdfs()
     # navigation_buttons(last_step=True)
     # st.button("Next", on_click=next_step)
 
