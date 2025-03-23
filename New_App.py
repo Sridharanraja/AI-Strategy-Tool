@@ -765,11 +765,13 @@ def step4():
                 step4_output = generate_response(full_prompt)
                 step4_output
 
-            # Store step1 output
+
+            
+            # Store step4 output
             st.session_state["step4"] = step4_output
             st.session_state["data"]["step4"]["step4_output"] = step4_output
             st.session_state["data"]["step4"] = {
-            "bot_reply": st.session_state["data"]["step4"].get("step4_output", "")
+            "step4_output": st.session_state["data"]["step4"].get("step4_output", "")
             }
 
             # st.write("### AI Output for Step 1:")
@@ -820,11 +822,11 @@ def step5():
             step5_output = generate_response5(full_prompt)
             step5_output
 
-        # Store step1 output
+        # Store step5 output
         st.session_state["step5"] = step5_output
         st.session_state["data"]["step5"]["step5_output"] = step5_output
         st.session_state["data"]["step5"] = {
-        "bot_reply": st.session_state["data"]["step5"].get("step5_output", "")
+        "step5_output": st.session_state["data"]["step5"].get("step5_output", "")
         }
 
             # st.write("### AI Output for Step 1:")
@@ -869,11 +871,11 @@ def step6():
             step6_output = generate_response6(full_prompt)
             step6_output
 
-        # Store step1 output
+        # Store step6 output
         st.session_state["step6"] = step6_output
         st.session_state["data"]["step6"]["step6_output"] = step6_output
         st.session_state["data"]["step6"] = {
-        "bot_reply": st.session_state["data"]["step6"].get("step6_output", "")
+        "step6_output": st.session_state["data"]["step6"].get("step6_output", "")
         }
 
             # st.write("### AI Output for Step 1:")
