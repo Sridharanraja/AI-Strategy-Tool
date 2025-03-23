@@ -462,18 +462,30 @@ def step0():
     data = st.session_state["data"]["step0"]
 
     # Apply CSS for all text areas
-    st.markdown(
-        f"""
-        <style>
-        textarea {{
-            font-size: {text_area_size}px !important;
-            font-weight: bold !important;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    # st.markdown(
+    #     f"""
+    #     <style>
+    #     textarea {{
+    #         font-size: {text_area_size}px !important;
+    #         font-weight: bold !important;
+    #     }}
+    #     </style>
+    #     """,
+    #     unsafe_allow_html=True,
+    # )
 
+    st.markdown(
+        """
+        <style>
+            .custom-font {
+                font-size: 22px;  /* Change font size */
+                font-weight: bold;  /* Optional: Make it bold */
+            }
+        </style>
+        """, 
+        unsafe_allow_html=True
+    )
+    
     # Q1: Organization Name
     organization_name = st.text_input("**Q1. What is your organization’s name?**", 
                                       value=data.get("organization_name", ""))
