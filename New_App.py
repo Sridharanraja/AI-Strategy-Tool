@@ -148,15 +148,15 @@ def download_all_pdfs():
     ]
     
     for step_name, data_key, file_name in steps:
-    step_data = st.session_state["data"].get(step_name, {}).get(data_key, "")
+        step_data = st.session_state["data"].get(step_name, {}).get(data_key, "")
 
-    if step_data:
-        # Generate PDF (already a BytesIO object)
-        pdf_file = generate_pdf(step_name, step_data)
-
-        # Directly append the BytesIO object
-        pdf_file.seek(0)
-        merger.append(pdf_file)
+        if step_data:
+            # Generate PDF (already a BytesIO object)
+            pdf_file = generate_pdf(step_name, step_data)
+    
+            # Directly append the BytesIO object
+            pdf_file.seek(0)
+            merger.append(pdf_file)
 
     # Create a buffer for the merged PDF
     merged_pdf_buffer = io.BytesIO()
