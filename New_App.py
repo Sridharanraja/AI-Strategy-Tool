@@ -730,6 +730,7 @@ def step4():
 
             full_prompt = f"""
             Context: {context}
+            Build the AI Strategy and Implementation covering all these points in detail,
             1. Executive Summary
             2. Current State Assessment
             2.1 Nike Company Profile
@@ -757,7 +758,7 @@ def step4():
             6.3 Technology Infrastructure
             6.4 Organizational Structure
             7. Conclusion and Next Steps
-            Build the AI Strategy and Implementation covering all these points in detail.{st.session_state.step3}
+            {st.session_state.step3}
             """
             #old : For the use cases identified in the High impact category, develop a detailed AI strategy and implementation the action plan. The AI statergy should include components like Vision and Goals, KPI's and Metrics, Current AI Readyness Assessment of capabilities,  Required AI infrastructure and technologies, AI Roadmap. Include a detailed section on Data and Infrastructure requirement, Talent and Skills requirement, Ethics and Governance, Change Management and Adoption, Continuous Monitoring and Evaluation 
             with st.spinner("Generating AI response..."):
