@@ -135,7 +135,6 @@ def download_pdf_button(step_name, data_key, file_name):
 def download_all_pdfs():
     """Combine all step PDFs into a single PDF and download."""
     merger = PdfMerger()
-    pdf_buffers = []
 
     # List of step names and corresponding keys
     steps = [
@@ -154,13 +153,12 @@ def download_all_pdfs():
         
         if step_data:
             pdf_file = generate_pdf(step_name, step_data)
-            
-            # Store in memory buffer
-            buffer = io.BytesIO(pdf_file)
-            buffer.seek(0)
-            
-            pdf_buffers.append(buffer)
-            merger.append(buffer)
+
+            # Wrap bytes in BytesIO object
+            pdf_buffer = io.BytesIO(pdf_bytes)
+            pdf_buffer.seek(0)         
+
+            merger.append(pdf_buffer)
     
     # Save the merged PDF into a new buffer
     merged_pdf = io.BytesIO()
