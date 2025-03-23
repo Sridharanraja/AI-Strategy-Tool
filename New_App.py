@@ -539,7 +539,9 @@ def step0():
                                  value=data.get("key_customers", ""))
 
     # Q5: Current AI Usage
-    st.markdown("### **Q5. Do you currently use AI in any part of your organization? If so, could you briefly describe these use cases?**", unsafe_allow_html=True)
+    # st.markdown("### **Q5. Do you currently use AI in any part of your organization? If so, could you briefly describe these use cases?**", unsafe_allow_html=True)
+    st.markdown('<p class="custom-font">Q5. Do you currently use AI in any part of your organization? If so, could you briefly describe these use cases?</p>', unsafe_allow_html=True)
+    
     ai_use_case_1 = st.text_area("**Q5a. Current AI use case 1**", 
                                  value=data.get("ai_use_case_1", ""))
     ai_use_case_2 = st.text_area("**Q5b. Current AI use case 2**", 
