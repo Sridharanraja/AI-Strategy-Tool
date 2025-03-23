@@ -478,7 +478,7 @@ def step0():
         """
         <style>
             .custom-font {
-                font-size: 6px;  /* Change font size */
+                font-size: 4px;  /* Change font size */
                 font-weight: bold;  /* Optional: Make it bold */
             }
         </style>
