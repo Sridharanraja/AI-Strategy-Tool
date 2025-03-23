@@ -26,3 +26,4 @@ crewai
 pysqlite3-binary
 pycountry
 pdfkit
+PyPDF2
