@@ -146,7 +146,9 @@ def download_all_pdfs():
         ("step5", "step5_output", "Step5_Report"),
         ("step6", "step6_output", "Step6_Report")
     ]
-
+    
+    pdf_buffers = []
+    
     # Generate individual PDFs and add them to the merger
     for step_name, data_key, file_name in steps:
         step_data = st.session_state["data"].get(step_name, {}).get(data_key, "")
@@ -157,22 +159,29 @@ def download_all_pdfs():
 
             # Wrap bytes in BytesIO object
             pdf_buffer = io.BytesIO(pdf_bytes)
-            pdf_buffer.seek(0)         
+            pdf_buffer.seek(0)
 
-            merger.append(pdf_buffer)
-    
-    # Save the merged PDF into a new buffer
-    merged_pdf = io.BytesIO()
-    merger.write(merged_pdf)
+            pdf_buffers.append(pdf_buffer)
+
+    # Create a buffer to hold the merged PDF
+    merged_pdf_buffer = io.BytesIO()
+
+    # Append each buffer to the merger
+    for buffer in pdf_buffers:
+        merger.append(buffer)
+
+    # Write the merged PDF to the buffer
+    merger.write(merged_pdf_buffer)
     merger.close()
 
-    # Set the buffer to the beginning before downloading
-    merged_pdf.seek(0)
+    # Reset the buffer pointer to the start
+    merged_pdf_buffer.seek(0)
+
 
     # Button to download the merged PDF
     st.download_button(
         label="📥 Download All Reports",
-        data=merged_pdf.getvalue(),
+        data=merged_pdf_buffer.getvalue(),
         file_name="All_Steps_Reports.pdf",
         mime="application/pdf"
     )
