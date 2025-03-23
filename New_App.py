@@ -152,10 +152,11 @@ def download_all_pdfs():
         step_data = st.session_state["data"].get(step_name, {}).get(data_key, "")
         
         if step_data:
-            pdf_file = generate_pdf(step_name, step_data)
+            pdf_bytes = generate_pdf(step_name, step_data)
+            # pdf_file = generate_pdf(step_name, step_data)
 
             # Wrap bytes in BytesIO object
-            pdf_buffer = io.BytesIO(pdf_file)
+            pdf_buffer = io.BytesIO(pdf_bytes)
             pdf_buffer.seek(0)         
 
             merger.append(pdf_buffer)
@@ -171,7 +172,7 @@ def download_all_pdfs():
     # Button to download the merged PDF
     st.download_button(
         label="📥 Download All Reports",
-        data=merged_pdf,
+        data=merged_pdf.getvalue(),
         file_name="All_Steps_Reports.pdf",
         mime="application/pdf"
     )
