@@ -478,14 +478,15 @@ def step0():
         """
         <style>
             .custom-font {
-                font-size: 4px;  /* Change font size */
+                font-size: 2px;  /* Change font size */
+                font-weight: bold;  /* Optional: Make it bold */
                 
             }
         </style>
         """, 
         unsafe_allow_html=True
     )
-    #font-weight: bold;  /* Optional: Make it bold */
+
     # Q1: Organization Name
     organization_name = st.text_input("**Q1. What is your organization’s name?**", 
                                       value=data.get("organization_name", ""))
