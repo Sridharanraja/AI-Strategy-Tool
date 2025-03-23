@@ -788,7 +788,7 @@ def step4():
 
             full_prompt = f"""
             Context: {context}
-            Build the AI Strategy covering all these points in detail and Cover each of the topics in 500 words,
+            Build the AI Strategy covering all these points in detail. Cover each of the topics mentioned below in more than 500 words:
             1. Executive Summary
             2. Current State Assessment
             2.1 Company Profile
