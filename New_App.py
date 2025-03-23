@@ -733,16 +733,16 @@ def step4():
             Build the AI Strategy and Implementation covering all these points in detail,
             1. Executive Summary
             2. Current State Assessment
-            2.1 Nike Company Profile
+            2.1 Company Profile
             2.2 Current AI Initiatives
-            2.3 AI Landscape in Retail and Sportswear
+            2.3 AI Landscape in the industry
             3. AI Strategy Framework
             3.1 Vision and Mission
             3.2 Strategic Objectives
             3.3 Strategic Pillars
             3.4 Governance Model
             3.5 Data Strategy
-            4. Nike-Specific AI Opportunities
+            4. Company-Specific AI Opportunities
             4.1 Opportunity Mapping
             4.2 Prioritization Framework
             4.3 Implementation Considerations
