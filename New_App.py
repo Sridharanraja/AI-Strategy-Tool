@@ -16,7 +16,7 @@ import tempfile
 import io
 from reportlab.pdfgen import canvas
 import textwrap 
-
+from PyPDF2 import PdfMerger
 
 # Initialize Streamlit app
 st.set_page_config(page_title="AI Strategy Planning Tool", page_icon="\U0001F9E0")
