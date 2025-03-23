@@ -730,8 +730,36 @@ def step4():
 
             full_prompt = f"""
             Context: {context}
-            For the use cases identified in the High impact category, develop a detailed AI strategy and implementation the action plan. The AI statergy should include components like Vision and Goals, KPI's and Metrics, Current AI Readyness Assessment of capabilities,  Required AI infrastructure and technologies, AI Roadmap. Include a detailed section on Data and Infrastructure requirement, Talent and Skills requirement, Ethics and Governance, Change Management and Adoption, Continuous Monitoring and Evaluation {st.session_state.step3}
+            1. Executive Summary
+            2. Current State Assessment
+            2.1 Nike Company Profile
+            2.2 Current AI Initiatives
+            2.3 AI Landscape in Retail and Sportswear
+            3. AI Strategy Framework
+            3.1 Vision and Mission
+            3.2 Strategic Objectives
+            3.3 Strategic Pillars
+            3.4 Governance Model
+            3.5 Data Strategy
+            4. Nike-Specific AI Opportunities
+            4.1 Opportunity Mapping
+            4.2 Prioritization Framework
+            4.3 Implementation Considerations
+            5. Implementation Roadmap
+            5.1 Phased Approach
+            5.2 Timeline and Milestones
+            5.3 Critical Dependencies
+            5.4 Change Management
+            5.5 Risk Management
+            6. Resource Requirements
+            6.1 Talent and Skills
+            6.2 Budget
+            6.3 Technology Infrastructure
+            6.4 Organizational Structure
+            7. Conclusion and Next Steps
+            Build the AI Strategy and Implementation covering all these points in detail.{st.session_state.step3}
             """
+            #old : For the use cases identified in the High impact category, develop a detailed AI strategy and implementation the action plan. The AI statergy should include components like Vision and Goals, KPI's and Metrics, Current AI Readyness Assessment of capabilities,  Required AI infrastructure and technologies, AI Roadmap. Include a detailed section on Data and Infrastructure requirement, Talent and Skills requirement, Ethics and Governance, Change Management and Adoption, Continuous Monitoring and Evaluation 
             with st.spinner("Generating AI response..."):
                 step4_output = generate_response(full_prompt)
                 step4_output
