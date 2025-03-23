@@ -456,7 +456,7 @@ def step0():
     # st.header("Q1. What is your organization’s name?")
     # Q1: Organization Name
     # Define global font size for text areas
-    text_area_size = 14  # Change this to adjust font size
+    text_area_size = 8  # Change this to adjust font size
 
     # Retrieve existing data or use defaults
     data = st.session_state["data"]["step0"]
