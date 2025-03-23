@@ -266,7 +266,7 @@ def generate_response(prompt):
         model=model_id,
         messages=[system_message, user_message],
         temperature=0.5,
-        max_tokens=2500
+        max_tokens=5500
     )
 
     return response.choices[0].message.content
@@ -788,7 +788,7 @@ def step4():
 
             full_prompt = f"""
             Context: {context}
-            Build the AI Strategy covering all these points in detail,
+            Build the AI Strategy covering all these points in detail. Cover each of the topics in 500 words,
             1. Executive Summary
             2. Current State Assessment
             2.1 Company Profile
