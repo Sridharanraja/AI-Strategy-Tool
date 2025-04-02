@@ -648,7 +648,8 @@ def step1():
 
             full_prompt = f"""
             Context: {context}
-            Construct value chains for the problem statement and business challenges identified in previous step and list primary and support activities. Provide a rational on why these value chains are constructed. {st.session_state.step0}
+            Based on the industry, sectors, segments captured in the user inputs, Construct value chains based on the concept developed by Michael Porter and used throughout the world for nearly 30 years).  {st.session_state.step0}
+            # Construct value chains for the problem statement and business challenges identified in previous step and list primary and support activities. Provide a rational on why these value chains are constructed. {st.session_state.step0}
             """
             with st.spinner("Generating AI response..."):
                 step1_output = generate_response(full_prompt)
