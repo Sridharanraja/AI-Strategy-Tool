@@ -486,31 +486,31 @@ def step0():
     )
 
     # Q1: Organization Name
-    organization_name = st.text_input("**Q1. What is the name of the company? Example: Uber, Amazon, Cognizant.",value=data.get("organization_name",""))
+    organization_name = st.text_input("**Q1. What is the name of the company? Example: Uber, Amazon, Cognizant.**",value=data.get("organization_name",""))
     
     # Q2: Num of Employees and Revenue 
-    num_employees_and_revenue = st.text_input("**Q2. Tell us more about the size of your company. Share details about number of employees and revenue.",value=data.get("num_employees_and_revenue",""))
+    num_employees_and_revenue = st.text_input("**Q2. Tell us more about the size of your company. Share details about number of employees and revenue.**",value=data.get("num_employees_and_revenue",""))
 
     # Q3: Industry, sectors and segments
-    industry_sectors_segments = st.text_input("**Q3. Give more details about the industry, sectors, segments you operate in. Example: Healthcare, Software, Retail, Beverages, Consulting",value=data.get("industry_sectors_segments",""))
+    industry_sectors_segments = st.text_input("**Q3. Give more details about the industry, sectors, segments you operate in. Example: Healthcare, Software, Retail, Beverages, Consulting**",value=data.get("industry_sectors_segments",""))
 
     # Q4: Country
-    country = st.text_input("**Q4. What country are you headquartered? What countries you operate in?",value=data.get("country",""))
+    country = st.text_input("**Q4. What country are you headquartered? What countries you operate in?**",value=data.get("country",""))
 
     # Q5: Key Customers
-    key_customers = st.text_input("**Q5. What are your main products or services? Who are your key customers? Are you more B2B or B2C type of company?",value=data.get("key_customers",""))
+    key_customers = st.text_input("**Q5. What are your main products or services? Who are your key customers? Are you more B2B or B2C type of company?**",value=data.get("key_customers",""))
 
     # Q6:Competitors
-    competitors = st.text_input("**Q6. Who are your competitors? What are some of your strengths against them?",value=data.get("competitors",""))
+    competitors = st.text_input("**Q6. Who are your competitors? What are some of your strengths against them?**",value=data.get("competitors",""))
 
     # Q7: AI Partner
-    ai_partner = st.text_input("**Q7. What are some of your business objectives, challenges and goals where you see scope for improvement through the use of AI?",value=data.get("ai_partner",""))
+    ai_partner = st.text_input("**Q7. What are some of your business objectives, challenges and goals where you see scope for improvement through the use of AI?**",value=data.get("ai_partner",""))
 
     #Q8: Challenges and Goals
-    objectives_challenges_goals = st.text_input("**Q8. How do you rate your company in terms of AI maturity and adoption? What are the top three AI use cases you have implemented?",value=data.get("objectives_challenges_goals",""))
+    objectives_challenges_goals = st.text_input("**Q8. How do you rate your company in terms of AI maturity and adoption? What are the top three AI use cases you have implemented?**",value=data.get("objectives_challenges_goals",""))
 
     #Q9: AI Maturity Adoption
-    AI_maturity_adoption = st.text_input("**Q9. Are you engaged with an AI consulting company/partner? If yes, can you please provide the name?",value=data.get("AI_maturity_adoption",""))
+    AI_maturity_adoption = st.text_input("**Q9. Are you engaged with an AI consulting company/partner? If yes, can you please provide the name?**",value=data.get("AI_maturity_adoption",""))
 
 
    #------------------------------------------------------------------------------------------------------------------------------------- 
