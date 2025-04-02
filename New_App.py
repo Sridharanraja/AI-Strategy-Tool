@@ -248,7 +248,7 @@ def generate_response(prompt):
     system_message = {
         "role": "system",
         "content": ("""
-        You are an AI strategy expert with more than 20 years of experience in AI strategy and consulting,
+        You are AI strategy expert from Ximerai with more than 20 years of experience in AI strategy and consulting,
         Technology and Management consulting firms like McKinsey Consulting and Accenture.
         You Your role is to systematically guide users in identifying and implementing the most suitable AI use cases based on their inputs,
         size (revenue and headcount), industry, capabilities, and strategic needs.
@@ -280,7 +280,7 @@ def generate_response5(prompt):
     system_message = {
         "role": "system",
         "content": ("""
-        You are an AI Project management and Implementation expert with strong project and program management abilities
+        You are an AI Project management and Implementation expert from Ximerai with strong project and program management abilities
         """
         )
     }
@@ -307,7 +307,7 @@ def generate_response6(prompt):
     system_message = {
         "role": "system",
         "content": ("""
-        You are a Technology expert and you have worked in companies like Microsoft, AWS, Accenture and Deloitte.
+        You are a Technology expert from Ximerai and in the past you have worked in companies like Microsoft, AWS, Accenture and Deloitte.
         Please provide detailed technology implementation plan  accessing the companies Data infrastructure,
         Cloud infrastructure, AI infrastructure and Integration infrastructure
         """
@@ -486,71 +486,100 @@ def step0():
     )
 
     # Q1: Organization Name
-    organization_name = st.text_input("**Q1. What is your organization’s name?**", 
-                                      value=data.get("organization_name", ""))
+    organization_name = st.text_input("**Q1. What is the name of the company? Example: Uber, Amazon, Cognizant.",value=data.get("organization_name",""))
+    
+    # Q2: Num of Employees and Revenue 
+    num_employees_and_revenue = st.text_input("**Q2. Tell us more about the size of your company. Share details about number of employees and revenue.",value=data.get("num_employees_and_revenue",""))
 
-    # Q2: Country Selection
-    countries = [country.name for country in pycountry.countries]
-    country = st.selectbox("**Q2. Which country is your organization based in?**", 
-                           countries, 
-                           index=countries.index(data.get("country", "United States")) if "country" in data else 0)
-    # country_list = ["USA", "Canada", "UK", "Germany", "France", "India", "China", "Japan", "Australia"]
-    # country = st.selectbox("**Q2. Which country is your organization based in?**", country_list)
+    # Q3: Industry, sectors and segments
+    industry_sectors_segments = st.text_input("**Q3. Give more details about the industry, sectors, segments you operate in. Example: Healthcare, Software, Retail, Beverages, Consulting",value=data.get("industry_sectors_segments",""))
 
-    # Q3a: Annual Revenue
-    annual_revenue = st.text_input("**Q3a. What is your organization’s annual revenue in USD?**", 
-                                   value=data.get("annual_revenue", ""))
+    # Q4: Country
+    country = st.text_input("**Q4. What country are you headquartered? What countries you operate in?",value=data.get("country",""))
 
-    # Q3b: Number of Employees
-    num_employees = st.text_input("**Q3b. What is the number of employees in your organization?**", 
-                                  value=data.get("num_employees", ""))
+    # Q5: Key Customers
+    key_customers = st.text_input("**Q5. What are your main products or services? Who are your key customers? Are you more B2B or B2C type of company?",value=data.get("key_customers",""))
 
-    # Q4a: Focus Area
-    focus_area = st.text_input("**Q4a. To help identify relevant AI use cases, which part of your organization do you want to focus on?**", 
-                               value=data.get("focus_area", ""))
+    # Q6:Competitors
+    competitors = st.text_input("**Q6. Who are your competitors? What are some of your strengths against them?",value=data.get("competitors",""))
+
+    # Q7: AI Partner
+    ai_partner = st.text_input("**Q7. What are some of your business objectives, challenges and goals where you see scope for improvement through the use of AI?",value=data.get("ai_partner",""))
+
+    #Q8: Challenges and Goals
+    objectives_challenges_goals = st.text_input("**Q8. How do you rate your company in terms of AI maturity and adoption? What are the top three AI use cases you have implemented?",value=data.get("objectives_challenges_goals",""))
+
+    #Q9: AI Maturity Adoption
+    AI_maturity_adoption = st.text_input("**Q9. Are you engaged with an AI consulting company/partner? If yes, can you please provide the name?",value=data.get("AI_maturity_adoption",""))
+
+
+   #------------------------------------------------------------------------------------------------------------------------------------- 
+    # # Q1: Organization Name
+    # organization_name = st.text_input("**Q1. What is your organization’s name?**", 
+    #                                   value=data.get("organization_name", ""))
+
+    # # Q2: Country Selection
+    # countries = [country.name for country in pycountry.countries]
+    # country = st.selectbox("**Q2. Which country is your organization based in?**", 
+    #                        countries, 
+    #                        index=countries.index(data.get("country", "United States")) if "country" in data else 0)
+    # # country_list = ["USA", "Canada", "UK", "Germany", "France", "India", "China", "Japan", "Australia"]
+    # # country = st.selectbox("**Q2. Which country is your organization based in?**", country_list)
+
+    # # Q3a: Annual Revenue
+    # annual_revenue = st.text_input("**Q3a. What is your organization’s annual revenue in USD?**", 
+    #                                value=data.get("annual_revenue", ""))
+
+    # # Q3b: Number of Employees
+    # num_employees = st.text_input("**Q3b. What is the number of employees in your organization?**", 
+    #                               value=data.get("num_employees", ""))
+
+    # # Q4a: Focus Area
+    # focus_area = st.text_input("**Q4a. To help identify relevant AI use cases, which part of your organization do you want to focus on?**", 
+    #                            value=data.get("focus_area", ""))
         
 
-    # Q4b: Industry Group (from CSV)
-    industries_df = pd.read_csv("industries.csv")
-    # sector = industries_df["sector"].unique().tolist()
-    sector = st.selectbox("**Q4b. Which industry sector best describes your business model?**",industries_df["sector"].unique().tolist(),index=0)
+    # # Q4b: Industry Group (from CSV)
+    # industries_df = pd.read_csv("industries.csv")
+    # # sector = industries_df["sector"].unique().tolist()
+    # sector = st.selectbox("**Q4b. Which industry sector best describes your business model?**",industries_df["sector"].unique().tolist(),index=0)
 
     
-    # Q4c & Q4d pre-process
-    filtered_df = industries_df[industries_df["sector"] == sector]
-    industry_groups = filtered_df["industry_group"].unique().tolist()
-    sub_industries = filtered_df["sub_industry"].unique().tolist()
+    # # Q4c & Q4d pre-process
+    # filtered_df = industries_df[industries_df["sector"] == sector]
+    # industry_groups = filtered_df["industry_group"].unique().tolist()
+    # sub_industries = filtered_df["sub_industry"].unique().tolist()
 
-    # Q4c: Industry
-    industry_groups = st.selectbox("**Q4c. Which industry best describes your business model?**",industry_groups)#,index=0)
+    # # Q4c: Industry
+    # industry_groups = st.selectbox("**Q4c. Which industry best describes your business model?**",industry_groups)#,index=0)
 
-    # Q4d: Sub-Industry
-    sub_industry = st.selectbox("**Q4d. Which sub-industry best describes your business model?**", 
-                                sub_industries, 
-                                index=0)
+    # # Q4d: Sub-Industry
+    # sub_industry = st.selectbox("**Q4d. Which sub-industry best describes your business model?**", 
+    #                             sub_industries, 
+    #                             index=0)
 
-    # Q4e: Main Products/Services
-    products_services = st.text_area("**Q4e. What are the main products or services?**", 
-                                     value=data.get("products_services", ""))
+    # # Q4e: Main Products/Services
+    # products_services = st.text_area("**Q4e. What are the main products or services?**", 
+    #                                  value=data.get("products_services", ""))
 
-    # Q4f: Key Customers
-    key_customers = st.text_area("**Q4f. Who are the key customers?**", 
-                                 value=data.get("key_customers", ""))
+    # # Q4f: Key Customers
+    # key_customers = st.text_area("**Q4f. Who are the key customers?**", 
+    #                              value=data.get("key_customers", ""))
 
-    # Q5: Current AI Usage
-    # st.markdown("### **Q5. Do you currently use AI in any part of your organization? If so, could you briefly describe these use cases?**", unsafe_allow_html=True)
-    st.markdown('<p class="custom-font">Q5. Do you currently use AI in any part of your organization? If so, could you briefly describe these use cases?</p>', unsafe_allow_html=True)
+    # # Q5: Current AI Usage
+    # # st.markdown("### **Q5. Do you currently use AI in any part of your organization? If so, could you briefly describe these use cases?**", unsafe_allow_html=True)
+    # st.markdown('<p class="custom-font">Q5. Do you currently use AI in any part of your organization? If so, could you briefly describe these use cases?</p>', unsafe_allow_html=True)
     
-    ai_use_case_1 = st.text_area("**Q5a. Current AI use case 1**", 
-                                 value=data.get("ai_use_case_1", ""))
-    ai_use_case_2 = st.text_area("**Q5b. Current AI use case 2**", 
-                                 value=data.get("ai_use_case_2", ""))
-    ai_use_case_3 = st.text_area("**Q5c. Current AI use case 3**", 
-                                 value=data.get("ai_use_case_3", ""))
+    # ai_use_case_1 = st.text_area("**Q5a. Current AI use case 1**", 
+    #                              value=data.get("ai_use_case_1", ""))
+    # ai_use_case_2 = st.text_area("**Q5b. Current AI use case 2**", 
+    #                              value=data.get("ai_use_case_2", ""))
+    # ai_use_case_3 = st.text_area("**Q5c. Current AI use case 3**", 
+    #                              value=data.get("ai_use_case_3", ""))
 
-    # Q6: Business Challenges/Opportunities
-    business_challenges = st.text_area("**Q6. Last question before we begin: do you have any particular business challenges or opportunities you want to see addressed in the portion of your organization we are focusing on?**", 
-                                       value=data.get("business_challenges", ""))
+    # # Q6: Business Challenges/Opportunities
+    # business_challenges = st.text_area("**Q6. Last question before we begin: do you have any particular business challenges or opportunities you want to see addressed in the portion of your organization we are focusing on?**", 
+    #                                    value=data.get("business_challenges", ""))
 
     if "step0" not in st.session_state:
         st.session_state.it_assessment = None
@@ -563,33 +592,43 @@ def step0():
     if st.button("Execute"):        
         full_prompt = f"""
         Provide an Executive Summary based on the responses received:
-        **Organization Details:**
-        - Organization Name: {organization_name}
-        - Country: {country}
-        - Annual Revenue in USD: {annual_revenue}
-        - Number of Employees: {num_employees}
-
-        **Business Details:**
-        - Focus Area: {focus_area}
-        - Sector: {sector}
-        - Industry Group: {industry_groups}
-        - Sub-Industry: {sub_industry}
-        - Main Products/Services: {products_services}
-        - Key Customers: {key_customers}
-
-        **Current AI Usage:**
-        - AI Use Case 1: {ai_use_case_1}
-        - AI Use Case 2: {ai_use_case_2}
-        - AI Use Case 3: {ai_use_case_3}
-
-        **Business Challenges & Opportunities:**
-        {business_challenges}
-
-        Based on the information gathered from the user and information available in the public domain and on the internet,
-        please provide detail summary. The summary should include topics like Business challenges and Goals,
-        Current AI readiness and maturity, potential use of AI in the interested area which would help in growth and competitiveness.
-        
+        Organization: {organization_name},Num of Employees and Revenue :{num_employees_and_revenue},
+        Industry, sectors and segments:{industry_sectors_segments},Country: {country},
+        key Customers: {key_customers},
+        Competitors: {competitors}, Competitors:{competitors},
+        AI Partner: {ai_partner}, Objectives, Challenges and Goals:{objectives_challenges_goals},
+        AI Maturity Adoption and 3 AI use cases: {AI_maturity_adoption}
+        Based on the information gathered from the user and information available in the public domain and on the internet, please provide a detailed summary. The summary should include topics like Business challenges and Goals, Current AI readiness and maturity, potential use of AI in the interested area which would help in growth and competitive advantage. 
         """
+        # f"""
+        # Provide an Executive Summary based on the responses received:
+        # **Organization Details:**
+        # - Organization Name: {organization_name}
+        # - Country: {country}
+        # - Annual Revenue in USD: {annual_revenue}
+        # - Number of Employees: {num_employees}
+
+        # **Business Details:**
+        # - Focus Area: {focus_area}
+        # - Sector: {sector}
+        # - Industry Group: {industry_groups}
+        # - Sub-Industry: {sub_industry}
+        # - Main Products/Services: {products_services}
+        # - Key Customers: {key_customers}
+
+        # **Current AI Usage:**
+        # - AI Use Case 1: {ai_use_case_1}
+        # - AI Use Case 2: {ai_use_case_2}
+        # - AI Use Case 3: {ai_use_case_3}
+
+        # **Business Challenges & Opportunities:**
+        # {business_challenges}
+
+        # Based on the information gathered from the user and information available in the public domain and on the internet,
+        # please provide detail summary. The summary should include topics like Business challenges and Goals,
+        # Current AI readiness and maturity, potential use of AI in the interested area which would help in growth and competitiveness.
+        
+        # """
 
         with st.spinner("Generating AI response..."):  # Show loading indicator
             bot_reply = generate_response(full_prompt)
@@ -599,21 +638,33 @@ def step0():
         st.session_state["data"]["step0"]["bot_reply"] = bot_reply
         st.session_state["data"]["step0"] = {
             "organization_name": organization_name,
+            "num_employees_and_revenue": num_employees_and_revenue,
+            "industry_sectors_segments": industry_sectors_segments,
             "country": country,
-            "annual_revenue": annual_revenue,
-            "num_employees": num_employees,
-            "focus_area": focus_area,
-            "sector": sector,
-            "industry_group": industry_groups,
-            "sub_industry": sub_industry,
-            "products_services": products_services,
             "key_customers": key_customers,
-            "ai_use_case_1": ai_use_case_1,
-            "ai_use_case_2": ai_use_case_2,
-            "ai_use_case_3": ai_use_case_3,
-            "business_challenges": business_challenges,
+            "competitors": competitors,
+            "ai_partner": ai_partner,
+            "objectives_challenges_goals": objectives_challenges_goals,
+            "AI_maturity_adoption": AI_maturity_adoption,
             "bot_reply": st.session_state["data"]["step0"].get("bot_reply", "")
         }
+        # st.session_state["data"]["step0"] = {
+        #     "organization_name": organization_name,
+        #     "country": country,
+        #     "annual_revenue": annual_revenue,
+        #     "num_employees": num_employees,
+        #     "focus_area": focus_area,
+        #     "sector": sector,
+        #     "industry_group": industry_groups,
+        #     "sub_industry": sub_industry,
+        #     "products_services": products_services,
+        #     "key_customers": key_customers,
+        #     "ai_use_case_1": ai_use_case_1,
+        #     "ai_use_case_2": ai_use_case_2,
+        #     "ai_use_case_3": ai_use_case_3,
+        #     "business_challenges": business_challenges,
+        #     "bot_reply": st.session_state["data"]["step0"].get("bot_reply", "")
+        # }
     download_pdf_button("step0","bot_reply","Step0_Report")
     # navigation_buttons()
     st.button("Next", on_click=next_step)
@@ -648,9 +699,10 @@ def step1():
 
             full_prompt = f"""
             Context: {context}
-            Based on the industry, sectors, segments captured in the user inputs, Construct value chains based on the concept developed by Michael Porter and used throughout the world for nearly 30 years).  {st.session_state.step0}
-            # Construct value chains for the problem statement and business challenges identified in previous step and list primary and support activities. Provide a rational on why these value chains are constructed. {st.session_state.step0}
+            Based on the industry, sectors, segments captured in the user inputs, Construct value chains based on the concept developed by Michael Porter and used throughout the world for nearly 30 years). {st.session_state.step0}
             """
+            # Construct value chains for the problem statement and business challenges identified in previous step and list primary and support activities. Provide a rational on why these value chains are constructed. {st.session_state.step0}
+            
             with st.spinner("Generating AI response..."):
                 step1_output = generate_response(full_prompt)
                 step1_output
@@ -694,8 +746,10 @@ def step2():
 
             full_prompt = f"""
             Context: {context}
-            Based on the value chains created in the previous step, Suggest top 5 AI use cases for the problem statement and business challenges suggested by the user. Provide detail business justification for selecting these use cases. {st.session_state.step1}
+            Based on the value chains created in the previous step, Suggest top 5-7 AI use cases. Provide justification and business case for selecting these use cases. {st.session_state.step1}
             """
+            # Based on the value chains created in the previous step, Suggest top 5 AI use cases for the problem statement and business challenges suggested by the user. Provide detail business justification for selecting these use cases. {st.session_state.step1}
+            
             with st.spinner("Generating AI response..."):
                 step2_output = generate_response(full_prompt)
                 step2_output
@@ -742,8 +796,14 @@ def step3():
 
             full_prompt = f"""
             Context: {context}
-            For the Identified use cases in the previous step, Categorize the AI use cases  into 4 buckets based on the principles of the effort-impact matrix. Provide scoring, detailed rationale and explanation for the categorization. {st.session_state.step2}
+            For the Identified use cases in the previous step, Categorize the AI use cases into 4 categories based on the principles of the effort-impact matrix. Provide scoring, detailed rationale and explanation for the categorization.
+            The top 3 AI use cases in the high impact-low effort and high impact-high effort should be suggested for the next step of creating the AI strategy. Prioritize the ones which are in the high impact-low effort category.
+            For the 3 shortlisted AI use cases, highlight Regulatory and compliance considerations, Data privacy and security concerns, Technical implementation challenges and Ethical implications.
+            For the 3 shortlisted use cases, suggest technical and infrastructure needed for each, the gaps between the current and the required infrastructure and risk profiles.
+            Based on the gap analysis and risk assessment, rank the 3 use cases by implementation feasibility.{st.session_state.step2}
             """
+            # For the Identified use cases in the previous step, Categorize the AI use cases  into 4 buckets based on the principles of the effort-impact matrix. Provide scoring, detailed rationale and explanation for the categorization. {st.session_state.step2}
+            
             with st.spinner("Generating AI response..."):
                 step3_output = generate_response(full_prompt)
                 step3_output
@@ -789,7 +849,7 @@ def step4():
 
             full_prompt = f"""
             Context: {context}
-            Build the AI Strategy covering all these points in detail. Write each of the points and sections mentioned below in more than 500 words per section in a paragraph style:
+            Build an AI Strategy and Implementation Plan covering all these points in detail. The detailed AI strategy document should cover the following points in detail:
             1. Executive Summary
             2. Current State Assessment
             2.1 Company Profile
@@ -817,8 +877,48 @@ def step4():
             6.3 Technology Infrastructure
             6.4 Organizational Structure
             7. Conclusion and Next Steps
+
+            The AI action plan should detail time frames, budget requirements and methodology needed.          
+            1. Assess AI skills
+            2. Acquire AI skills
+            3. Access AI resources
+            4. Prioritize AI use cases
+            5. Create an AI proof of concept
+            6. Implement responsible AI
+            7. Estimate delivery timelines 
+            8. Establishment of AI Center of Excellence
             {st.session_state.step3}
             """
+
+            # Build the AI Strategy covering all these points in detail. Write each of the points and sections mentioned below in more than 500 words per section in a paragraph style:
+            # 1. Executive Summary
+            # 2. Current State Assessment
+            # 2.1 Company Profile
+            # 2.2 Current AI Initiatives
+            # 2.3 AI Landscape in the industry
+            # 3. AI Strategy Framework
+            # 3.1 Vision and Mission
+            # 3.2 Strategic Objectives
+            # 3.3 Strategic Pillars
+            # 3.4 Governance Model
+            # 3.5 Data Strategy
+            # 4. Company-Specific AI Opportunities
+            # 4.1 Opportunity Mapping
+            # 4.2 Prioritization Framework
+            # 4.3 Implementation Considerations
+            # 5. Implementation Roadmap
+            # 5.1 Phased Approach
+            # 5.2 Timeline and Milestones
+            # 5.3 Critical Dependencies
+            # 5.4 Change Management
+            # 5.5 Risk Management
+            # 6. Resource Requirements
+            # 6.1 Talent and Skills
+            # 6.2 Budget
+            # 6.3 Technology Infrastructure
+            # 6.4 Organizational Structure
+            # 7. Conclusion and Next Steps
+            # {st.session_state.step3}
             #old : For the use cases identified in the High impact category, develop a detailed AI strategy and implementation the action plan. The AI statergy should include components like Vision and Goals, KPI's and Metrics, Current AI Readyness Assessment of capabilities,  Required AI infrastructure and technologies, AI Roadmap. Include a detailed section on Data and Infrastructure requirement, Talent and Skills requirement, Ethics and Governance, Change Management and Adoption, Continuous Monitoring and Evaluation 
             with st.spinner("Generating AI response..."):
                 step4_output = generate_response(full_prompt)
@@ -868,16 +968,26 @@ def step5():
         full_prompt = f"""
         Context: {context}
         For the AI strategy in the previous step, create a detailed implementation plan. Please have details on the following topics as part of the implementation plan.  The implementation plan should detail time frames, budget requirements and methodology needed.          
-        1.	Assess AI skills
-        2.	Acquire AI skills
-        3.	Access AI resources
-        4.	Prioritize AI use cases
-        5.	Create an AI proof of concept
-        6.	Implement responsible AI
-        7.	Estimate delivery timelines 
-    	8. Establishment of AI Center of Excellence
-        {st.session_state.step4}
+        1. Assess AI skills
+        2. Acquire AI skills
+        3. Access AI resources
+        4. Prioritize AI use cases
+        5. Create an AI proof of concept
+        6. Implement responsible AI
+        7. Estimate delivery timelines 
+        8. Establishment of AI Center of Excellence
+        {st.session_state.step4} 
         """
+            #    For the AI strategy in the previous step, create a detailed implementation plan. Please have details on the following topics as part of the implementation plan.  The implementation plan should detail time frames, budget requirements and methodology needed.          
+     #    1.	Assess AI skills
+     #    2.	Acquire AI skills
+     #    3.	Access AI resources
+     #    4.	Prioritize AI use cases
+     #    5.	Create an AI proof of concept
+     #    6.	Implement responsible AI
+     #    7.	Estimate delivery timelines 
+    	# 8. Establishment of AI Center of Excellence
+     #    {st.session_state.step4}
         with st.spinner("Generating AI response..."):
             step5_output = generate_response5(full_prompt)
             step5_output
@@ -927,6 +1037,10 @@ def step6():
         Cloud infrastructure, AI infrastructure and Integration infrastructure.        
         {st.session_state.step5}
         """
+        
+        # Create a detailed Technology Implementation Project plan which should provide details for components like Data infrastructure,
+        # Cloud infrastructure, AI infrastructure and Integration infrastructure.
+        
         with st.spinner("Generating AI response..."):
             step6_output = generate_response6(full_prompt)
             step6_output
