@@ -639,7 +639,7 @@ def step4():
     if st.button("Execute"):
         with st.spinner("Thinking..."):
             full_prompt = f"""
-            Build a detailed document for “AI Strategy and Implementation action Plan”.  The detailed AI strategy document should cover the following points in detail:
+            Build a detailed document for “AI Strategy and Implementation action Plan”.  The detailed AI strategy document should cover the following points in detail. Write atleast half a page for each for each of these points:
             1. Executive Summary
             2. Current State Assessment
             2.1 Company Profile
