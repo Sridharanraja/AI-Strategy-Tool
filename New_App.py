@@ -598,7 +598,7 @@ def step0():
         Competitors: {competitors}, Competitors:{competitors},
         AI Partner: {ai_partner}, Objectives, Challenges and Goals:{objectives_challenges_goals},
         AI Maturity Adoption and 3 AI use cases: {AI_maturity_adoption}
-        Based on the information gathered from the user and information available in the public domain and on the internet, please provide a detailed summary. The summary should include topics like Business challenges and Goals, Current AI readiness and maturity, potential use of AI in the interested area which would help in growth and competitive advantage. 
+        Based on the information gathered from the user and information available in the public domain and on the internet, please provide a detailed executive summary. The summary should include topics like Business challenges and Goals, Competitive positioning and landscape, Industry trends and growth prospects, Current AI readiness and maturity and how AI can help to achieve that. 
         """
         # f"""
         # Provide an Executive Summary based on the responses received:
@@ -699,7 +699,7 @@ def step1():
 
             full_prompt = f"""
             Context: {context}
-            Based on the industry, sectors, segments captured in the user inputs, Construct value chains based on the concept developed by Michael Porter and used throughout the world for nearly 30 years). {st.session_state.step0}
+            Based on the industry, sectors, segments, product and services captured in the user inputs, Construct value chains based on the concept. Also, list primary and support activities. {st.session_state.step0}
             """
             # Construct value chains for the problem statement and business challenges identified in previous step and list primary and support activities. Provide a rational on why these value chains are constructed. {st.session_state.step0}
             
@@ -746,7 +746,7 @@ def step2():
 
             full_prompt = f"""
             Context: {context}
-            Based on the value chains created in the previous step, Suggest top 5-7 AI use cases. Provide justification and business case for selecting these use cases. {st.session_state.step1}
+            Based on the value chains proposed by Ximerai in the previous step and the business goal and objective captured from the user inputs, Suggest top 5-7 AI use cases. Provide justification and business case for selecting these use cases. {st.session_state.step1}
             """
             # Based on the value chains created in the previous step, Suggest top 5 AI use cases for the problem statement and business challenges suggested by the user. Provide detail business justification for selecting these use cases. {st.session_state.step1}
             
@@ -796,11 +796,11 @@ def step3():
 
             full_prompt = f"""
             Context: {context}
-            For the Identified use cases in the previous step, Categorize the AI use cases into 4 categories based on the principles of the effort-impact matrix. Provide scoring, detailed rationale and explanation for the categorization.
-            The top 3 AI use cases in the high impact-low effort and high impact-high effort should be suggested for the next step of creating the AI strategy. Prioritize the ones which are in the high impact-low effort category.
-            For the 3 shortlisted AI use cases, highlight Regulatory and compliance considerations, Data privacy and security concerns, Technical implementation challenges and Ethical implications.
-            For the 3 shortlisted use cases, suggest technical and infrastructure needed for each, the gaps between the current and the required infrastructure and risk profiles.
-            Based on the gap analysis and risk assessment, rank the 3 use cases by implementation feasibility.{st.session_state.step2}
+            You are a strategy consultant from company Ximerai.  For the Identified use cases in the previous step, Categorize the AI use cases into 4 categories based on the principles of the effort-impact matrix. Provide scoring, detailed rationale and explanation for the categorization.
+            The four categories are high impact-low effort, high impact- high effort, low impact – low effort and low impact – high effort.
+            The top 3 AI use cases in the high impact-low effort and high impact- high effort category, Prioritize the ones which are in the high impact-low effort category.
+            For the 3 shortlisted AI use cases, highlight data and AI infrastructure considerations, regulatory and compliance considerations, data privacy and security concerns, technical implementation challenges and ethical implications.
+            For the 3 shortlisted use cases, suggest technical and infrastructure needed for each, the gaps between the current and the required infrastructure and risk profiles. Based on the gap analysis and risk assessment, rank the 3 use cases by implementation feasibility.{st.session_state.step2}
             """
             # For the Identified use cases in the previous step, Categorize the AI use cases  into 4 buckets based on the principles of the effort-impact matrix. Provide scoring, detailed rationale and explanation for the categorization. {st.session_state.step2}
             
@@ -849,7 +849,7 @@ def step4():
 
             full_prompt = f"""
             Context: {context}
-            Build an AI Strategy and Implementation Plan covering all these points in detail. The detailed AI strategy document should cover the following points in detail:
+            Build a detailed document for “AI Strategy and Implementation action Plan”.  The detailed AI strategy document should cover the following points in detail:
             1. Executive Summary
             2. Current State Assessment
             2.1 Company Profile
@@ -878,7 +878,7 @@ def step4():
             6.4 Organizational Structure
             7. Conclusion and Next Steps
 
-            The AI action plan should detail time frames, budget requirements and methodology needed.          
+            The AI action plan should detail time frames, budget requirements and methodology needed for the following topics.          
             1. Assess AI skills
             2. Acquire AI skills
             3. Access AI resources
