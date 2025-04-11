@@ -766,7 +766,7 @@ def step6():
 
         full_prompt = f"""
         Create a detailed Technology Implementation Project plan which should provide details for components like Data infrastructure,
-        Cloud infrastructure, AI infrastructure and Integration infrastructure.        
+        Cloud infrastructure, AI infrastructure and Integration infrastructure. Present data in Tabular format and charts.      
         {st.session_state.step5}
         """
         
