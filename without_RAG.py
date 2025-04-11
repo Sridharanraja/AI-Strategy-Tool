@@ -21,6 +21,7 @@ from PyPDF2 import PdfMerger
 # Initialize Streamlit app
 st.set_page_config(page_title="AI Strategy Planning Tool", page_icon="\U0001F9E0")
 
+torch.classes.__path__ = []
 
 def generate_pdf(step_name, step_data):
     """Generate a properly formatted PDF for each step."""
