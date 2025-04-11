@@ -27,4 +27,7 @@ pysqlite3-binary
 pycountry
 pdfkit
 PyPDF2
-hf_xet
+diffusers
+transformers
+accelerate
+peft
